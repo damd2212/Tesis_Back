@@ -21,6 +21,82 @@ pathDtypes = os.path.join(pathArchivos, 'dtypes_consumidores.pkl')
 
 diccionario_deptos = {'Antioquia': 'Antioquia', 'Cundinamarca': 'Cundinamarca', 'Caldas': 'Caldas', 'Valle': 'Valle del Cauca', 'Bolivar': 'Bolívar', 'Santander': 'Santander', 'Atlantico': 'Atlántico', 'Meta': 'Meta', 'Nariño': 'Nariño', 'Risaralda': 'Risaralda', 'Boyaca': 'Boyacá', 'Tolima': 'Tolima', 'Norte de Santander': 'Norte de Santander', 'Cordoba': 'Córdoba', 'Cesar': 'Cesar', 'Sucre': 'Sucre', 'Guaviare': 'Guaviare', 'Cauca': 'Cauca', 'Magdalena': 'Magdalena', 'Quindio': 'Quindío', 'La Guajira': 'La Guajira', 'Caqueta': 'Caquetá', 'Huila': 'Huila', 'Choco': 'Chocó', 'Casanare': 'Casanare', 'Arauca': 'Arauca', 'Putumayo': 'Putumayo', 'Guainia': 'Guainía', 'Amazonas': 'Amazonas', 'San Andres': 'San Andrés', 'Vichada': 'Vichada', 'Vaupes': 'Vaupés'}
 diccionario_riesgo = {0:'Muy bajo', 1:'Bajo', 2:'Medio', 3:'Alto',4:'Muy alto'}
+diccionario_nivel_educ = {'d2_05_Media': 'd2_05_Media', 'd2_05_Tecnico/Tecnologo': 'd2_05_Tecnico/Tecnologo', 'd2_05_Universitario': 'd2_05_Universitario', 'd2_05_Basica_secundaria': 'd2_05_Basica_secundaria', 'd2_05_Basica_primaria': 'd2_05_Basica_primaria', 'd2_05_Postgrado': 'd2_05_Postgrado', 'd2_05_Ninguno': 'd2_05_Ninguno', 'd2_05_Preescolar': 'd2_05_Preescolar'}
+
+
+#conteo de cada valor en la columna 'frecuencia_consumo' para cada nivel educativo. se utiliza función crosstab de pandas, que crea una tabla de contingencia.
+@api_view(['GET'])
+def lista_conteo_nivel_edu_marihuana(request):
+
+    data = pd.read_csv(pathCSV)
+
+    if request.method == 'GET':
+
+        tabla_contingencia = pd.crosstab(data['d2_05_nivel_educativo_tipo'], data['frecuencia_consumo_marihuana_tipo'])
+
+        dict_nivel_edu = tabla_contingencia.to_dict()
+
+        # Mapear los nombres de los niveles educativos según el diccionario_nivel_educ
+        diccionario = {diccionario_nivel_educ.get(clave, clave): valor for clave, valor in dict_nivel_edu.items()}
+
+        return JsonResponse(diccionario, safe=False)
+
+#conteo de cada valor en la columna 'frecuencia_consumo' para cada nivel educativo. se utiliza función crosstab de pandas, que crea una tabla de contingencia.
+@api_view(['GET'])
+def lista_conteo_nivel_edu_cocaina(request):
+
+    data = pd.read_csv(pathCSV)
+
+    if request.method == 'GET':
+
+        tabla_contingencia = pd.crosstab(data['d2_05_nivel_educativo_tipo'], data['frecuencia_consumo_cocaina_tipo'])
+
+        dict_nivel_edu = tabla_contingencia.to_dict()
+
+        # Mapear los nombres de los niveles educativos según el diccionario_nivel_educ
+        diccionario = {diccionario_nivel_educ.get(clave, clave): valor for clave, valor in dict_nivel_edu.items()}
+
+        return JsonResponse(diccionario, safe=False)
+
+
+#conteo de cada valor en la columna 'frecuencia_consumo' para cada nivel educativo. se utiliza función crosstab de pandas, que crea una tabla de contingencia.
+@api_view(['GET'])
+def lista_conteo_nivel_edu_bazuco(request):
+
+    data = pd.read_csv(pathCSV)
+
+    if request.method == 'GET':
+
+        tabla_contingencia = pd.crosstab(data['d2_05_nivel_educativo_tipo'], data['frecuencia_consumo_basuco_tipo'])
+
+        dict_nivel_edu = tabla_contingencia.to_dict()
+
+        # Mapear los nombres de los niveles educativos según el diccionario_nivel_educ
+        diccionario = {diccionario_nivel_educ.get(clave, clave): valor for clave, valor in dict_nivel_edu.items()}
+
+        return JsonResponse(diccionario, safe=False)
+
+@api_view(['GET'])
+def lista_conteo_depto_v2(request):
+    
+    data = pd.read_csv(pathCSV)
+
+    if request.method == 'GET':
+        data_depto = data['departamento'].value_counts()
+
+        # Se obtenie los 7 principales departamentos
+        principales_deptos = data_depto.head(10)
+        otros_deptos = data_depto.iloc[10:]
+
+        # Suma el conteo de los departamentos restantes y agrega a la categoría "Otros"
+        #otros_count = otros_deptos.sum()
+        #principales_deptos['Otros'] = otros_count
+
+        dict_depto = principales_deptos.to_dict()
+        diccionario = {diccionario_deptos.get(clave, clave): valor for clave, valor in dict_depto.items()}
+
+        return JsonResponse(diccionario, safe=False)
+
 
 # Create your views here.
 @api_view(['GET'])

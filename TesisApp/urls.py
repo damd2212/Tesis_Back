@@ -7,4 +7,8 @@ urlpatterns = [
     re_path(r'^filtro$', views.lista_conteo_depto),
     re_path(r'^num_riesgo$', views.conteo_riesgo),
     re_path(r'^departamentos$', views.lista_departamentos),
+    re_path(r'^conteo_depto$', views.lista_conteo_depto_v2),
+    re_path(r'^conteo_nivel_edu_marihuana$', views.lista_conteo_nivel_edu_marihuana),
+    re_path(r'^conteo_nivel_edu_cocaina$', views.lista_conteo_nivel_edu_cocaina),
+    re_path(r'^conteo_nivel_edu_bazuco$', views.lista_conteo_nivel_edu_bazuco)
 ]
