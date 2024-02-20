@@ -10,5 +10,8 @@ urlpatterns = [
     re_path(r'^conteo_depto$', views.lista_conteo_depto_v2),
     re_path(r'^conteo_nivel_edu_marihuana$', views.lista_conteo_nivel_edu_marihuana),
     re_path(r'^conteo_nivel_edu_cocaina$', views.lista_conteo_nivel_edu_cocaina),
-    re_path(r'^conteo_nivel_edu_bazuco$', views.lista_conteo_nivel_edu_bazuco)
+    re_path(r'^conteo_nivel_edu_bazuco$', views.lista_conteo_nivel_edu_bazuco),
+    re_path(r'^conteo_riesgo_edad$', views.lista_conteo_riesgo_edad),
+    re_path(r'^conteo_riesgo_situacion_actual$', views.lista_conteo_riesgo_situacion_actual),
+    re_path(r'^conteo_riesgo_sexo_tipo$', views.lista_conteo_riesgo_per_sexo_tipo)
 ]

@@ -22,6 +22,69 @@ pathDtypes = os.path.join(pathArchivos, 'dtypes_consumidores.pkl')
 diccionario_deptos = {'Antioquia': 'Antioquia', 'Cundinamarca': 'Cundinamarca', 'Caldas': 'Caldas', 'Valle': 'Valle del Cauca', 'Bolivar': 'Bolívar', 'Santander': 'Santander', 'Atlantico': 'Atlántico', 'Meta': 'Meta', 'Nariño': 'Nariño', 'Risaralda': 'Risaralda', 'Boyaca': 'Boyacá', 'Tolima': 'Tolima', 'Norte de Santander': 'Norte de Santander', 'Cordoba': 'Córdoba', 'Cesar': 'Cesar', 'Sucre': 'Sucre', 'Guaviare': 'Guaviare', 'Cauca': 'Cauca', 'Magdalena': 'Magdalena', 'Quindio': 'Quindío', 'La Guajira': 'La Guajira', 'Caqueta': 'Caquetá', 'Huila': 'Huila', 'Choco': 'Chocó', 'Casanare': 'Casanare', 'Arauca': 'Arauca', 'Putumayo': 'Putumayo', 'Guainia': 'Guainía', 'Amazonas': 'Amazonas', 'San Andres': 'San Andrés', 'Vichada': 'Vichada', 'Vaupes': 'Vaupés'}
 diccionario_riesgo = {0:'Muy bajo', 1:'Bajo', 2:'Medio', 3:'Alto',4:'Muy alto'}
 diccionario_nivel_educ = {'d2_05_Media': 'd2_05_Media', 'd2_05_Tecnico/Tecnologo': 'd2_05_Tecnico/Tecnologo', 'd2_05_Universitario': 'd2_05_Universitario', 'd2_05_Basica_secundaria': 'd2_05_Basica_secundaria', 'd2_05_Basica_primaria': 'd2_05_Basica_primaria', 'd2_05_Postgrado': 'd2_05_Postgrado', 'd2_05_Ninguno': 'd2_05_Ninguno', 'd2_05_Preescolar': 'd2_05_Preescolar'}
+diccionario_per_edad_tipo = {'Adolescente':'Adolescente','Joven':'Joven','Adulto':'Adulto','Persona mayor':'Persona mayor'}
+diccionario_situacion_tipo = {'Buscando trabajo': 'Buscando trabajo', 'Trabajando':'Trabajando', 'Otros':'Otros', 'Estudiando':'Estudiando'}
+diccionario_per_sexo_tipo = {'Hombre': 'Hombre', 'Mujer':'Mujer'}
+
+@api_view(['GET'])
+def lista_conteo_riesgo_edad(request):
+
+    data = pd.read_csv(pathCSV)
+
+    if request.method == 'GET':
+        tabla_contingencia = pd.crosstab(data['per_edad_tipo'], data['CatRiesgo'])
+
+        dict_per_edad_tipo = tabla_contingencia.to_dict()
+
+        # Mapear los nombres de la edad según el diccionario
+        diccionario = {diccionario_per_edad_tipo.get(clave, clave): valor for clave, valor in dict_per_edad_tipo.items()}
+        diccionario = {diccionario_riesgo[int(clave)]: valor for clave, valor in diccionario.items()}
+        return JsonResponse(diccionario, safe=False)
+
+@api_view(['GET'])
+def lista_conteo_riesgo_situacion_actual(request):
+
+    data = pd.read_csv(pathCSV)
+
+    if request.method == 'GET':
+
+        tabla_contingencia = pd.crosstab(data['situacion_tipo'], data['CatRiesgo'])
+
+        dict_situacion_tipo = tabla_contingencia.to_dict()
+
+        # Mapear los nombres de los niveles educativos según el diccionario
+        diccionario = {diccionario_situacion_tipo.get(clave, clave): valor for clave, valor in dict_situacion_tipo.items()}
+        diccionario = {diccionario_riesgo[int(clave)]: valor for clave, valor in diccionario.items()}
+        return JsonResponse(diccionario, safe=False)
+
+
+@api_view(['GET'])
+def lista_conteo_riesgo_per_sexo_tipo(request):
+
+    data = pd.read_csv(pathCSV)
+
+    if request.method == 'GET':
+
+        tabla_contingencia = pd.crosstab(data['per_sexo_tipo'], data['CatRiesgo'])
+
+        dict_sexo_riesgo = tabla_contingencia.to_dict()
+
+        # Mapear los nombres de los niveles educativos según el diccionario
+        diccionario = {diccionario_per_sexo_tipo.get(clave, clave): valor for clave, valor in dict_sexo_riesgo.items()}
+        diccionario = {diccionario_riesgo[int(clave)]: valor for clave, valor in diccionario.items()}
+
+        return JsonResponse(diccionario, safe=False)
+
+        # Organizar el resultado por género
+        #resultado = {}
+        #for clave, valor in diccionario.items():
+         #   for genero, conteo in valor.items():
+          #      if genero not in resultado:
+           #         resultado[genero] = []
+            #    resultado[genero].append(conteo)
+
+        #return JsonResponse(resultado, safe=False)
+
 
 
 #conteo de cada valor en la columna 'frecuencia_consumo' para cada nivel educativo. se utiliza función crosstab de pandas, que crea una tabla de contingencia.
