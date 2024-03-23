@@ -3,6 +3,8 @@ from django.shortcuts import render
 from django.http.response import JsonResponse
 from rest_framework.parsers import JSONParser
 from rest_framework.decorators import api_view
+from TesisApp.entities import caracteristica
+from TesisApp.utils import data
 import os
 import pandas as pd
 import json
@@ -25,6 +27,11 @@ diccionario_nivel_educ = {'d2_05_Media': 'd2_05_Media', 'd2_05_Tecnico/Tecnologo
 diccionario_per_edad_tipo = {'Adolescente':'Adolescente','Joven':'Joven','Adulto':'Adulto','Persona mayor':'Persona mayor'}
 diccionario_situacion_tipo = {'Buscando trabajo': 'Buscando trabajo', 'Trabajando':'Trabajando', 'Otros':'Otros', 'Estudiando':'Estudiando'}
 diccionario_per_sexo_tipo = {'Hombre': 'Hombre', 'Mujer':'Mujer'}
+dict_prediccion_significado = {0:'El riesgo muy bajo al consumo de sustancias psicoactivas como Cocaína, Marihuana y/o Basuco hace referencia a las pocas probabilidades que tiene la persona de experimentar consecuencias negativas al consumir este tipo sustancias. Además, también puede indicar que la persona consume muy poco este tipo de sustancias o nunca las ha consumido, pero tiene conocimiento de los efectos que pueden causar, sin embargo, si la persona consume así sea muy poco, existe la probabilidad de que la personas sufra de consecuencias negativas.',
+                               1:'El riesgo bajo al consumo de sustancias psicoactivas como Cocaína, Marihuana y/o Basuco significa que las probabilidades de experimentar consecuencias negativas pueden aumentar respecto a un riesgo muy bajo, sin embargo, se consideran pequeñas probabilidades dado que las personas puede que consuman estas sustancias con menor precaución, pero no con frecuencia o puede que no consuma, sin embargo, si la persona consume existe la probabilidad de que experimente consecuencias negativas.',
+                               2:'El riesgo medio al consumo de sustancias psicoactivas como Cocaína, Marihuana y/o Basuco puede indicar que la persona consume estas sustancias en mayores cantidades y mas frecuente, lo cual aumenta las probabilidades de que experimente efectos adversos en la salud física y mental, indicando que la persona tiene conciencia de las consecuencias de consumir este tipo de sustancias, sin embargo, no toma las precauciones necesarias para reducir este consumo.',
+                               3:'El riesgo alto al consumo de sustancias psicoactivas como Cocaína, Marihuana y/o Basuco hace referencia a una alta probabilidad de sufrir consecuencias negativas como daños físicos y mentales, dirigiéndose a una adicción, dado que la persona puede que consuma altas cantidades de estas sustancias sin moderarse, donde también puede verse influenciado por su circulo de personas con los que comparte como amigos y familiares.', 
+                               4:'El riesgo muy alto al consumo de sustancias psicoactivas como Cocaína, Marihuana y/o Basuco hace referencia a una elevada probabilidad de sufrir consecuencias negativas y graves como daños físicos y mentales, dirigiéndose a una adicción, dado que la persona puede estar consumiendo altas cantidades de estas sustancias de manera muy frecuente, por lo cual es necesario que la persona requiera de una ayuda profesional para disminuir o evitar el consumo de este tipo de sustancias.'}
 diccionario_variables = {'variables': [
     {'nombreFake': 'Departamento', 'nombreReal':'departamento'},{'nombreFake':'Residentes hogar','nombreReal':'residentes_hogar'},{'nombreFake':'Numero de hijos','nombreReal':'d2_04_num_hijos'},{'nombreFake':'Edad','nombreReal':'per_edad_tipo'}
     ,{'nombreFake':'Estrato','nombreReal':'estrato_tipo'},{'nombreFake':'Situacion social','nombreReal':'situacion_tipo'},{'nombreFake':'Frecuencia consumo marihuana','nombreReal':'frecuencia_consumo_marihuana_tipo'},{'nombreFake':'Frecuencia consumo cocaina','nombreReal':'frecuencia_consumo_cocaina_tipo'}
@@ -122,41 +129,6 @@ def lista_conteo_nivel_edu_marihuana(request):
         #diccionario = {diccionario_nivel_educ.get(clave, clave): valor for clave, valor in dict_nivel_edu.items()}
 
         return JsonResponse(dict_nivel_edu, safe=False)
-
-#conteo de cada valor en la columna 'frecuencia_consumo' para cada nivel educativo. se utiliza función crosstab de pandas, que crea una tabla de contingencia.
-@api_view(['GET'])
-def lista_conteo_nivel_edu_cocaina(request):
-
-    data = pd.read_csv(pathCSV)
-
-    if request.method == 'GET':
-
-        tabla_contingencia = pd.crosstab(data['d2_05_nivel_educativo_tipo'], data['frecuencia_consumo_cocaina_tipo'])
-
-        dict_nivel_edu = tabla_contingencia.to_dict()
-
-        # Mapear los nombres de los niveles educativos según el diccionario_nivel_educ
-        diccionario = {diccionario_nivel_educ.get(clave, clave): valor for clave, valor in dict_nivel_edu.items()}
-
-        return JsonResponse(diccionario, safe=False)
-
-
-#conteo de cada valor en la columna 'frecuencia_consumo' para cada nivel educativo. se utiliza función crosstab de pandas, que crea una tabla de contingencia.
-@api_view(['GET'])
-def lista_conteo_nivel_edu_bazuco(request):
-
-    data = pd.read_csv(pathCSV)
-
-    if request.method == 'GET':
-
-        tabla_contingencia = pd.crosstab(data['d2_05_nivel_educativo_tipo'], data['frecuencia_consumo_basuco_tipo'])
-
-        dict_nivel_edu = tabla_contingencia.to_dict()
-
-        # Mapear los nombres de los niveles educativos según el diccionario_nivel_educ
-        diccionario = {diccionario_nivel_educ.get(clave, clave): valor for clave, valor in dict_nivel_edu.items()}
-
-        return JsonResponse(diccionario, safe=False)
 
 @api_view(['GET'])
 def lista_conteo_depto_v2(request):
@@ -302,15 +274,26 @@ def predecir(request):
         #El diccionario obtenido se orrdena de forma descendente
         dict_ordenado = dict(sorted(dict_procesado.items(), key=lambda item: item[1], reverse=True))
         
+        #Obtener sumatoria de la importancia de las caracteristicas
+        total = obtener_total_importancia(dict_ordenado)
+
         #Se obtiene las 10 caracteristicas que tuvieron mayor impacto
-        dict_10_caracteristicas = dict(list(dict_ordenado.items())[:10])
+        dict_10_caracteristicas = dict(list(dict_ordenado.items())[:5])
+        
+        print(total)
+        
+        #Se obtiene La lista 
+        lista_caracteristicas = crearListaCaracteristicas(dict_10_caracteristicas, total)
+        #porcentaje_total = obtener_total_porcentaje(lista_caracteristicas)
+        #print(porcentaje_total)
+        #print(lista_caracteristicas)
         
         #Se convierte la prediccion a string
         prediccion = int(str(prediccion_nueva[0]))
         str_prediccion = obtenerStrPrediccion(prediccion)
         
         #Se crea la respuesta y se retorna
-        respuesta = {'prediccion': str_prediccion, 'caracteristicas':dict_10_caracteristicas}
+        respuesta = {'prediccion': str_prediccion,'significado':dict_prediccion_significado[prediccion], 'caracteristicas':lista_caracteristicas}
         return JsonResponse(respuesta)
 
 #Funcion para procesar las caracteristicas en su valor inicial
@@ -355,6 +338,30 @@ def obtenerStrPrediccion(prediccion):
         return 'Riesgo alto'
     else:
         return 'Riesgo muy alto'
+
+def obtener_total_importancia(dict_caracteristicas):
+    total = 0
+    for clave, valor in dict_caracteristicas.items():
+        total = total + valor
+    return total
+
+def obtener_total_porcentaje(lista):
+    total = 0
+    for diccionario in lista:
+        total = total + diccionario['porcentaje']
+    return total
+
+def crearListaCaracteristicas(dict_caracteristicas, total_importancia):
+    lista_caracteristicas = []
+    porcentaje = 0
+    for clave, valor in dict_caracteristicas.items():
+        if clave != 'CatRiesgo':
+            porcentaje = (valor * 100) / total_importancia
+            significado = data.dict_caracteristicas_significado[clave]
+            objCaracteristica = caracteristica.Caracteristica(clave, significado, round(porcentaje, 2))
+            lista_caracteristicas.append(objCaracteristica.to_dict())
+        
+    return lista_caracteristicas
 
 #Funcion para convertir el json a diccionario
 def dict_a_df(obs, columnas, dtypes):
