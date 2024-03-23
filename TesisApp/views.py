@@ -25,6 +25,22 @@ diccionario_nivel_educ = {'d2_05_Media': 'd2_05_Media', 'd2_05_Tecnico/Tecnologo
 diccionario_per_edad_tipo = {'Adolescente':'Adolescente','Joven':'Joven','Adulto':'Adulto','Persona mayor':'Persona mayor'}
 diccionario_situacion_tipo = {'Buscando trabajo': 'Buscando trabajo', 'Trabajando':'Trabajando', 'Otros':'Otros', 'Estudiando':'Estudiando'}
 diccionario_per_sexo_tipo = {'Hombre': 'Hombre', 'Mujer':'Mujer'}
+diccionario_variables = {'variables': [
+    {'nombreFake': 'Departamento', 'nombreReal':'departamento'},{'nombreFake':'Residentes hogar','nombreReal':'residentes_hogar'},{'nombreFake':'Numero de hijos','nombreReal':'d2_04_num_hijos'},{'nombreFake':'Edad','nombreReal':'per_edad_tipo'}
+    ,{'nombreFake':'Estrato','nombreReal':'estrato_tipo'},{'nombreFake':'Situacion social','nombreReal':'situacion_tipo'},{'nombreFake':'Frecuencia consumo marihuana','nombreReal':'frecuencia_consumo_marihuana_tipo'},{'nombreFake':'Frecuencia consumo cocaina','nombreReal':'frecuencia_consumo_cocaina_tipo'}
+    ,{'nombreFake':'Sexo','nombreReal':'per_sexo_tipo'},{'nombreFake':'Vive padre hogar','nombreReal':'vive_padre_hogar_tipo'},{'nombreFake':'Vive madre hogar','nombreReal':'vive_madre_hogar_tipo'},{'nombreFake':'Tipo de vivienda','nombreReal':'vivienda_tipo'},{'nombreFake':'Aporta dinero en su hogar','nombreReal':'d_01_aporta_dinero_hogar_tipo'}
+    ,{'nombreFake':'Estado de salud','nombreReal':'d_08_estado_salud_tipo'},{'nombreFake':'Personas deprimidas','nombreReal':'d_09_deprimido_tipo'},{'nombreFake':'Personas con poco interes','nombreReal':'d_10_poco_interes_tipo'},{'nombreFake':'Conocimiento riesgo de fumar marihuana','nombreReal':'d_11_h_conocimiento_riesgo_fumar_marihuana_frecuentemente_tipo'},{'nombreFake':'Conocimiento riesgo de fumar cocaina','nombreReal':'d_11_k_conocimiento_riesgo_cocaina_frecuentemente_tipo'}
+    ,{'nombreFake':'Conocimiento riesgo de fumar basuco','nombreReal':'d_11_n_conocimiento_riesgo_fumar_basuco_frecuentemente_tipo'},{'nombreFake':'Problemas de consumo de SP en el barrio','nombreReal':'d_12_b_presenta_problema_consumo_sp_barrio_tipo'},{'nombreFake':'Problemas de expendio de SP en el barrio','nombreReal':'d_12_c_presenta_problema_expendio_sp_barrio_tipo'},{'nombreFake':'Tipo de etnia','nombreReal':'d2_01_etnia_tipo'},{'nombreFake':'Estado civil','nombreReal':'d2_03_estado_civil_tipo'}
+    ,{'nombreFake':'Nivel educativo','nombreReal':'d2_05_nivel_educativo_tipo'},{'nombreFake':'Consumo de SP por parte de familiares','nombreReal':'g_01_familiares_consumen_sp_tipo'},{'nombreFake':'Comsumo de SP por parte de amigos','nombreReal':'g_02_amigos_consumen_sp_tipo'},{'nombreFake':'Curiosidad de probar SP','nombreReal':'g_03_curiosidad_probar_sp_tipo'},{'nombreFake':'Personas probarían SP','nombreReal':'g_04_probaria_sp_tipo'}
+    ,{'nombreFake':'Posibilidad de probar SP','nombreReal':'g_05_posibilidad_probar_sp_tipo'},{'nombreFake':'Posiblidad de conseguir marihuana','nombreReal':'g_06_a_posibilidad_conseguir_marihuana_tipo'},{'nombreFake':'Posibilidad de conseguir cocaina','nombreReal':'g_06_b_posibilidad_conseguir_cocaina_tipo'},{'nombreFake':'Posibilidad de conseguir basuco','nombreReal':'g_06_c_posibilidad_conseguir_basuco_tipo'},{'nombreFake':'Alguien ofreció comprar o probar SP','nombreReal':'g_07_alguien_ofrecio_comprar_probar_sp_tipo'}
+    ,{'nombreFake':'Numero de familiares que consumen SP','nombreReal':'g_01_a_num_familiares_consumen_sp_imp_tipo'},{'nombreFake':'Numero de amigos que consumen SP','nombreReal':'g_02_a_num_amigos_consumen_sp_imp_tipo'},{'nombreFake':'Tiempo en que le ofrecieron marihuana','nombreReal':'g_08_a_ofrecieron_marihuana_imp_tipo'},{'nombreFake':'Tiempo en que le ofrecieron cocaina','nombreReal':'g_08_b_ofrecieron_cocaina_imp_tipo'},{'nombreFake':'Tiempo en que le ofrecieron basuco','nombreReal':'g_08_c_ofrecieron_basuco_imp_tipo'}
+    ,{'nombreFake':'Nivel de riesgo','nombreReal':'CatRiesgo'} 
+]}
+
+@api_view(['GET'])
+def lista_variables(request):
+    if request.method == 'GET':
+        return JsonResponse(diccionario_variables, safe=False)
 
 @api_view(['GET'])
 def lista_conteo_riesgo_edad(request):
@@ -91,18 +107,21 @@ def lista_conteo_riesgo_per_sexo_tipo(request):
 @api_view(['GET'])
 def lista_conteo_nivel_edu_marihuana(request):
 
+    filtro1_param = request.query_params.get('filtro1_param') 
+    filtro2_param = request.query_params.get('filtro2_param')
+
     data = pd.read_csv(pathCSV)
 
     if request.method == 'GET':
 
-        tabla_contingencia = pd.crosstab(data['d2_05_nivel_educativo_tipo'], data['frecuencia_consumo_marihuana_tipo'])
+        tabla_contingencia = pd.crosstab(data[filtro1_param], data[filtro2_param])
 
         dict_nivel_edu = tabla_contingencia.to_dict()
 
         # Mapear los nombres de los niveles educativos según el diccionario_nivel_educ
-        diccionario = {diccionario_nivel_educ.get(clave, clave): valor for clave, valor in dict_nivel_edu.items()}
+        #diccionario = {diccionario_nivel_educ.get(clave, clave): valor for clave, valor in dict_nivel_edu.items()}
 
-        return JsonResponse(diccionario, safe=False)
+        return JsonResponse(dict_nivel_edu, safe=False)
 
 #conteo de cada valor en la columna 'frecuencia_consumo' para cada nivel educativo. se utiliza función crosstab de pandas, que crea una tabla de contingencia.
 @api_view(['GET'])
@@ -143,22 +162,27 @@ def lista_conteo_nivel_edu_bazuco(request):
 def lista_conteo_depto_v2(request):
     
     data = pd.read_csv(pathCSV)
+    filtro_param = request.query_params.get('filtro_param')
 
     if request.method == 'GET':
-        data_depto = data['departamento'].value_counts()
+        data_depto = data[filtro_param].value_counts()
 
-        # Se obtenie los 7 principales departamentos
-        principales_deptos = data_depto.head(10)
-        otros_deptos = data_depto.iloc[10:]
+        print(len(data_depto))
+        # Se obtenie los 10 principales elementos
+        if len(data_depto) > 9:
+            principales_deptos = data_depto.head(10)
+            otros_deptos = data_depto.iloc[10:]
+        else:
+            principales_deptos = data_depto
 
         # Suma el conteo de los departamentos restantes y agrega a la categoría "Otros"
         #otros_count = otros_deptos.sum()
         #principales_deptos['Otros'] = otros_count
 
         dict_depto = principales_deptos.to_dict()
-        diccionario = {diccionario_deptos.get(clave, clave): valor for clave, valor in dict_depto.items()}
+        #diccionario = {diccionario_deptos.get(clave, clave): valor for clave, valor in dict_depto.items()}
 
-        return JsonResponse(diccionario, safe=False)
+        return JsonResponse(dict_depto, safe=False)
 
 
 # Create your views here.

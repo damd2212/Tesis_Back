@@ -13,5 +13,6 @@ urlpatterns = [
     re_path(r'^conteo_nivel_edu_bazuco$', views.lista_conteo_nivel_edu_bazuco),
     re_path(r'^conteo_riesgo_edad$', views.lista_conteo_riesgo_edad),
     re_path(r'^conteo_riesgo_situacion_actual$', views.lista_conteo_riesgo_situacion_actual),
-    re_path(r'^conteo_riesgo_sexo_tipo$', views.lista_conteo_riesgo_per_sexo_tipo)
+    re_path(r'^conteo_riesgo_sexo_tipo$', views.lista_conteo_riesgo_per_sexo_tipo),
+    re_path(r'^lista_variables$', views.lista_variables)
 ]
