@@ -358,7 +358,7 @@ def crearListaCaracteristicas(dict_caracteristicas, total_importancia):
         if clave != 'CatRiesgo':
             porcentaje = (valor * 100) / total_importancia
             significado = data.dict_caracteristicas_significado[clave]
-            objCaracteristica = caracteristica.Caracteristica(clave, significado, round(porcentaje, 2))
+            objCaracteristica = caracteristica.Caracteristica(clave, significado, round(valor, 6))
             lista_caracteristicas.append(objCaracteristica.to_dict())
         
     return lista_caracteristicas
