@@ -4,7 +4,7 @@ from django.http.response import JsonResponse
 from rest_framework.parsers import JSONParser
 from rest_framework.decorators import api_view
 from TesisApp.entities import caracteristica
-from TesisApp.utils import data
+from TesisApp.utils import data_variables
 import os
 import pandas as pd
 import json
@@ -21,33 +21,10 @@ pathPipeline = os.path.join(pathArchivos, 'pipeline_rf_best.pkl')
 #pathDtypes = os.path.join(pathArchivos, 'dtypes_ames.pkl')
 pathDtypes = os.path.join(pathArchivos, 'dtypes_consumidores.pkl')
 
-diccionario_deptos = {'Antioquia': 'Antioquia', 'Cundinamarca': 'Cundinamarca', 'Caldas': 'Caldas', 'Valle': 'Valle del Cauca', 'Bolivar': 'Bolívar', 'Santander': 'Santander', 'Atlantico': 'Atlántico', 'Meta': 'Meta', 'Nariño': 'Nariño', 'Risaralda': 'Risaralda', 'Boyaca': 'Boyacá', 'Tolima': 'Tolima', 'Norte de Santander': 'Norte de Santander', 'Cordoba': 'Córdoba', 'Cesar': 'Cesar', 'Sucre': 'Sucre', 'Guaviare': 'Guaviare', 'Cauca': 'Cauca', 'Magdalena': 'Magdalena', 'Quindio': 'Quindío', 'La Guajira': 'La Guajira', 'Caqueta': 'Caquetá', 'Huila': 'Huila', 'Choco': 'Chocó', 'Casanare': 'Casanare', 'Arauca': 'Arauca', 'Putumayo': 'Putumayo', 'Guainia': 'Guainía', 'Amazonas': 'Amazonas', 'San Andres': 'San Andrés', 'Vichada': 'Vichada', 'Vaupes': 'Vaupés'}
-diccionario_riesgo = {0:'Muy bajo', 1:'Bajo', 2:'Medio', 3:'Alto',4:'Muy alto'}
-diccionario_nivel_educ = {'d2_05_Media': 'd2_05_Media', 'd2_05_Tecnico/Tecnologo': 'd2_05_Tecnico/Tecnologo', 'd2_05_Universitario': 'd2_05_Universitario', 'd2_05_Basica_secundaria': 'd2_05_Basica_secundaria', 'd2_05_Basica_primaria': 'd2_05_Basica_primaria', 'd2_05_Postgrado': 'd2_05_Postgrado', 'd2_05_Ninguno': 'd2_05_Ninguno', 'd2_05_Preescolar': 'd2_05_Preescolar'}
-diccionario_per_edad_tipo = {'Adolescente':'Adolescente','Joven':'Joven','Adulto':'Adulto','Persona mayor':'Persona mayor'}
-diccionario_situacion_tipo = {'Buscando trabajo': 'Buscando trabajo', 'Trabajando':'Trabajando', 'Otros':'Otros', 'Estudiando':'Estudiando'}
-diccionario_per_sexo_tipo = {'Hombre': 'Hombre', 'Mujer':'Mujer'}
-dict_prediccion_significado = {0:'El riesgo muy bajo al consumo de sustancias psicoactivas como Cocaína, Marihuana y/o Basuco hace referencia a las pocas probabilidades que tiene la persona de experimentar consecuencias negativas al consumir este tipo sustancias. Además, también puede indicar que la persona consume muy poco este tipo de sustancias o nunca las ha consumido, pero tiene conocimiento de los efectos que pueden causar, sin embargo, si la persona consume así sea muy poco, existe la probabilidad de que la personas sufra de consecuencias negativas.',
-                               1:'El riesgo bajo al consumo de sustancias psicoactivas como Cocaína, Marihuana y/o Basuco significa que las probabilidades de experimentar consecuencias negativas pueden aumentar respecto a un riesgo muy bajo, sin embargo, se consideran pequeñas probabilidades dado que las personas puede que consuman estas sustancias con menor precaución, pero no con frecuencia o puede que no consuma, sin embargo, si la persona consume existe la probabilidad de que experimente consecuencias negativas.',
-                               2:'El riesgo medio al consumo de sustancias psicoactivas como Cocaína, Marihuana y/o Basuco puede indicar que la persona consume estas sustancias en mayores cantidades y mas frecuente, lo cual aumenta las probabilidades de que experimente efectos adversos en la salud física y mental, indicando que la persona tiene conciencia de las consecuencias de consumir este tipo de sustancias, sin embargo, no toma las precauciones necesarias para reducir este consumo.',
-                               3:'El riesgo alto al consumo de sustancias psicoactivas como Cocaína, Marihuana y/o Basuco hace referencia a una alta probabilidad de sufrir consecuencias negativas como daños físicos y mentales, dirigiéndose a una adicción, dado que la persona puede que consuma altas cantidades de estas sustancias sin moderarse, donde también puede verse influenciado por su circulo de personas con los que comparte como amigos y familiares.', 
-                               4:'El riesgo muy alto al consumo de sustancias psicoactivas como Cocaína, Marihuana y/o Basuco hace referencia a una elevada probabilidad de sufrir consecuencias negativas y graves como daños físicos y mentales, dirigiéndose a una adicción, dado que la persona puede estar consumiendo altas cantidades de estas sustancias de manera muy frecuente, por lo cual es necesario que la persona requiera de una ayuda profesional para disminuir o evitar el consumo de este tipo de sustancias.'}
-diccionario_variables = {'variables': [
-    {'nombreFake': 'Departamento', 'nombreReal':'departamento'},{'nombreFake':'Residentes hogar','nombreReal':'residentes_hogar'},{'nombreFake':'Numero de hijos','nombreReal':'d2_04_num_hijos'},{'nombreFake':'Edad','nombreReal':'per_edad_tipo'}
-    ,{'nombreFake':'Estrato','nombreReal':'estrato_tipo'},{'nombreFake':'Situacion social','nombreReal':'situacion_tipo'},{'nombreFake':'Frecuencia consumo marihuana','nombreReal':'frecuencia_consumo_marihuana_tipo'},{'nombreFake':'Frecuencia consumo cocaina','nombreReal':'frecuencia_consumo_cocaina_tipo'}
-    ,{'nombreFake':'Sexo','nombreReal':'per_sexo_tipo'},{'nombreFake':'Vive padre hogar','nombreReal':'vive_padre_hogar_tipo'},{'nombreFake':'Vive madre hogar','nombreReal':'vive_madre_hogar_tipo'},{'nombreFake':'Tipo de vivienda','nombreReal':'vivienda_tipo'},{'nombreFake':'Aporta dinero en su hogar','nombreReal':'d_01_aporta_dinero_hogar_tipo'}
-    ,{'nombreFake':'Estado de salud','nombreReal':'d_08_estado_salud_tipo'},{'nombreFake':'Personas deprimidas','nombreReal':'d_09_deprimido_tipo'},{'nombreFake':'Personas con poco interes','nombreReal':'d_10_poco_interes_tipo'},{'nombreFake':'Conocimiento riesgo de fumar marihuana','nombreReal':'d_11_h_conocimiento_riesgo_fumar_marihuana_frecuentemente_tipo'},{'nombreFake':'Conocimiento riesgo de fumar cocaina','nombreReal':'d_11_k_conocimiento_riesgo_cocaina_frecuentemente_tipo'}
-    ,{'nombreFake':'Conocimiento riesgo de fumar basuco','nombreReal':'d_11_n_conocimiento_riesgo_fumar_basuco_frecuentemente_tipo'},{'nombreFake':'Problemas de consumo de SP en el barrio','nombreReal':'d_12_b_presenta_problema_consumo_sp_barrio_tipo'},{'nombreFake':'Problemas de expendio de SP en el barrio','nombreReal':'d_12_c_presenta_problema_expendio_sp_barrio_tipo'},{'nombreFake':'Tipo de etnia','nombreReal':'d2_01_etnia_tipo'},{'nombreFake':'Estado civil','nombreReal':'d2_03_estado_civil_tipo'}
-    ,{'nombreFake':'Nivel educativo','nombreReal':'d2_05_nivel_educativo_tipo'},{'nombreFake':'Consumo de SP por parte de familiares','nombreReal':'g_01_familiares_consumen_sp_tipo'},{'nombreFake':'Comsumo de SP por parte de amigos','nombreReal':'g_02_amigos_consumen_sp_tipo'},{'nombreFake':'Curiosidad de probar SP','nombreReal':'g_03_curiosidad_probar_sp_tipo'},{'nombreFake':'Personas probarían SP','nombreReal':'g_04_probaria_sp_tipo'}
-    ,{'nombreFake':'Posibilidad de probar SP','nombreReal':'g_05_posibilidad_probar_sp_tipo'},{'nombreFake':'Posiblidad de conseguir marihuana','nombreReal':'g_06_a_posibilidad_conseguir_marihuana_tipo'},{'nombreFake':'Posibilidad de conseguir cocaina','nombreReal':'g_06_b_posibilidad_conseguir_cocaina_tipo'},{'nombreFake':'Posibilidad de conseguir basuco','nombreReal':'g_06_c_posibilidad_conseguir_basuco_tipo'},{'nombreFake':'Alguien ofreció comprar o probar SP','nombreReal':'g_07_alguien_ofrecio_comprar_probar_sp_tipo'}
-    ,{'nombreFake':'Numero de familiares que consumen SP','nombreReal':'g_01_a_num_familiares_consumen_sp_imp_tipo'},{'nombreFake':'Numero de amigos que consumen SP','nombreReal':'g_02_a_num_amigos_consumen_sp_imp_tipo'},{'nombreFake':'Tiempo en que le ofrecieron marihuana','nombreReal':'g_08_a_ofrecieron_marihuana_imp_tipo'},{'nombreFake':'Tiempo en que le ofrecieron cocaina','nombreReal':'g_08_b_ofrecieron_cocaina_imp_tipo'},{'nombreFake':'Tiempo en que le ofrecieron basuco','nombreReal':'g_08_c_ofrecieron_basuco_imp_tipo'}
-    ,{'nombreFake':'Nivel de riesgo','nombreReal':'CatRiesgo'} 
-]}
-
 @api_view(['GET'])
 def lista_variables(request):
     if request.method == 'GET':
-        return JsonResponse(diccionario_variables, safe=False)
+        return JsonResponse(data_variables.diccionario_variables, safe=False)
 
 @api_view(['GET'])
 def lista_conteo_riesgo_edad(request):
@@ -60,8 +37,8 @@ def lista_conteo_riesgo_edad(request):
         dict_per_edad_tipo = tabla_contingencia.to_dict()
 
         # Mapear los nombres de la edad según el diccionario
-        diccionario = {diccionario_per_edad_tipo.get(clave, clave): valor for clave, valor in dict_per_edad_tipo.items()}
-        diccionario = {diccionario_riesgo[int(clave)]: valor for clave, valor in diccionario.items()}
+        diccionario = {data_variables.diccionario_per_edad_tipo.get(clave, clave): valor for clave, valor in dict_per_edad_tipo.items()}
+        diccionario = {data_variables.diccionario_riesgo[int(clave)]: valor for clave, valor in diccionario.items()}
         return JsonResponse(diccionario, safe=False)
 
 @api_view(['GET'])
@@ -76,8 +53,8 @@ def lista_conteo_riesgo_situacion_actual(request):
         dict_situacion_tipo = tabla_contingencia.to_dict()
 
         # Mapear los nombres de los niveles educativos según el diccionario
-        diccionario = {diccionario_situacion_tipo.get(clave, clave): valor for clave, valor in dict_situacion_tipo.items()}
-        diccionario = {diccionario_riesgo[int(clave)]: valor for clave, valor in diccionario.items()}
+        diccionario = {data_variables.diccionario_situacion_tipo.get(clave, clave): valor for clave, valor in dict_situacion_tipo.items()}
+        diccionario = {data_variables.diccionario_riesgo[int(clave)]: valor for clave, valor in diccionario.items()}
         return JsonResponse(diccionario, safe=False)
 
 
@@ -93,8 +70,8 @@ def lista_conteo_riesgo_per_sexo_tipo(request):
         dict_sexo_riesgo = tabla_contingencia.to_dict()
 
         # Mapear los nombres de los niveles educativos según el diccionario
-        diccionario = {diccionario_per_sexo_tipo.get(clave, clave): valor for clave, valor in dict_sexo_riesgo.items()}
-        diccionario = {diccionario_riesgo[int(clave)]: valor for clave, valor in diccionario.items()}
+        diccionario = {data_variables.diccionario_per_sexo_tipo.get(clave, clave): valor for clave, valor in dict_sexo_riesgo.items()}
+        diccionario = {data_variables.diccionario_riesgo[int(clave)]: valor for clave, valor in diccionario.items()}
 
         return JsonResponse(diccionario, safe=False)
 
@@ -171,7 +148,7 @@ def lista_registros(request):
 @api_view(['GET'])
 def lista_departamentos(request):
     if request.method == 'GET':
-        return JsonResponse(diccionario_deptos, safe=False)
+        return JsonResponse(data_variables.diccionario_deptos, safe=False)
     
 
 #Funcion para obtener los departamentos por el nivel de riesgo
@@ -197,7 +174,7 @@ def lista_conteo_depto(request):
                     aux_dict_data[clave_data_filtrada] = round(porcentaje, 2)
                     break
 
-        nuevo_diccionario = {diccionario_deptos[clave]: valor for clave, valor in aux_dict_data.items()}
+        nuevo_diccionario = {data_variables.diccionario_deptos[clave]: valor for clave, valor in aux_dict_data.items()}
         
         return JsonResponse(nuevo_diccionario, safe=False)
     
@@ -226,7 +203,7 @@ def conteo_riesgo(request):
         if filtro_depto != 'todos':
             conteo_data_riesgo = consumidores[consumidores['departamento'] == filtro_depto]['CatRiesgo'].value_counts()
         dict_data_riesgo = conteo_data_riesgo.to_dict()
-        nuevo_diccionario_riesgo = {diccionario_riesgo[clave]: valor for clave, valor in dict_data_riesgo.items()}
+        nuevo_diccionario_riesgo = {data_variables.diccionario_riesgo[clave]: valor for clave, valor in dict_data_riesgo.items()}
         return JsonResponse(nuevo_diccionario_riesgo, safe=False)
   
 @api_view(['POST'])   
@@ -293,7 +270,7 @@ def predecir(request):
         str_prediccion = obtenerStrPrediccion(prediccion)
         
         #Se crea la respuesta y se retorna
-        respuesta = {'prediccion': str_prediccion,'significado':dict_prediccion_significado[prediccion], 'caracteristicas':lista_caracteristicas}
+        respuesta = {'prediccion': str_prediccion,'significado':data_variables.dict_prediccion_significado[prediccion], 'caracteristicas':lista_caracteristicas}
         return JsonResponse(respuesta)
 
 #Funcion para procesar las caracteristicas en su valor inicial
@@ -357,7 +334,7 @@ def crearListaCaracteristicas(dict_caracteristicas, total_importancia):
     for clave, valor in dict_caracteristicas.items():
         if clave != 'CatRiesgo':
             porcentaje = (valor * 100) / total_importancia
-            significado = data.dict_caracteristicas_significado[clave]
+            significado = data_variables.dict_caracteristicas_significado[clave]
             objCaracteristica = caracteristica.Caracteristica(clave, significado, round(valor, 6))
             lista_caracteristicas.append(objCaracteristica.to_dict())
         
