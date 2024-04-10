@@ -25,6 +25,11 @@ pathDtypes = os.path.join(pathArchivos, 'dtypes_consumidores.pkl')
 def lista_variables(request):
     if request.method == 'GET':
         return JsonResponse(data_variables.diccionario_variables, safe=False)
+    
+@api_view(['GET'])
+def lista_variables_significado(request):
+    if request.method == 'GET':
+        return JsonResponse(data_variables.dict_caracteristicas_significado, safe=False)
 
 @api_view(['GET'])
 def lista_conteo_riesgo_edad(request):
