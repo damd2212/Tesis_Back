@@ -4,6 +4,7 @@ from django.http.response import JsonResponse
 from rest_framework.parsers import JSONParser
 from rest_framework.decorators import api_view
 from TesisApp.entities import caracteristica
+from TesisApp.entities import variable
 from TesisApp.utils import data_variables
 import os
 import pandas as pd
@@ -29,7 +30,14 @@ def lista_variables(request):
 @api_view(['GET'])
 def lista_variables_significado(request):
     if request.method == 'GET':
-        return JsonResponse(data_variables.dict_caracteristicas_significado, safe=False)
+        lista_variables = []
+        for clave, valor in data_variables.dict_caracteristicas_significado.items():
+            if clave != 'CatRiesgo':
+                significado = data_variables.dict_caracteristicas_significado[clave]
+                objCaracteristica = variable.Variable(clave, significado)
+                lista_variables.append(objCaracteristica.to_dict())
+        auxDict = {'variables':lista_variables}
+        return JsonResponse(auxDict, safe=False)
 
 @api_view(['GET'])
 def lista_conteo_riesgo_edad(request):
