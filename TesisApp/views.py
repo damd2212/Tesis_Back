@@ -245,4 +245,3 @@ def guardarNuevoRegistro(prediccion, obs_df):
     obs_df = obs_df.reindex(columns=data.columns)
     data = pd.concat([data, obs_df], ignore_index=True)
     joblib.dump(data, pathDFData)
-
