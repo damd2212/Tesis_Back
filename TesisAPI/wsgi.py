@@ -12,6 +12,7 @@ import os
 from django.core.wsgi import get_wsgi_application
 from TesisApp.columnExtractor import ColumnExtractor
 
+print("Directorio actual:", os.getcwd())
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'TesisAPI.settings')
 
 application = get_wsgi_application()
