@@ -177,19 +177,21 @@ def conteo_riesgo(request):
   
 @api_view(['POST'])   
 def predecir(request):
-    print("entro a predecir______")
-    with open(pathJsonColumnas) as fname:
-        pipeline_columnas = json.load(fname)
-    print("Cargo jsonColumnas______")
-    pipeline = joblib.load(pathPipeline)
-    print("Cargo Pipeline______")
-    pipeline_dtypes = joblib.load(pathDtypes)
-    print("Cargo tipos de datos______")
-    print("Se obtuvo los arvhicos para predecir____________")
-    
-    if request.method =='POST':
-        respuesta = {}
-        try:
+    try:
+        print("entro a predecir______")
+        with open(pathJsonColumnas) as fname:
+            pipeline_columnas = json.load(fname)
+        print("Cargo jsonColumnas______")
+        pipeline = joblib.load(pathPipeline)
+        print("Cargo Pipeline______")
+        pipeline_dtypes = joblib.load(pathDtypes)
+        print("Cargo tipos de datos______")
+        print("Se obtuvo los arvhicos para predecir____________")
+        
+        if request.method =='POST':
+            respuesta = {}
+            
+                
             data_formulario = JSONParser().parse(request)
             #Para predecir y obtener la importancia de las caracteristicas para la nueva prediccion
             
@@ -223,7 +225,6 @@ def predecir(request):
             
             #El diccionario obtenido se orrdena de forma descendente
             dict_ordenado = dict(sorted(dict_procesado.items(), key=lambda item: item[1], reverse=True))
-
             #Se obtiene las 10 caracteristicas que tuvieron mayor impacto
             dict_10_caracteristicas = dict(list(dict_ordenado.items())[:5])
             
@@ -244,10 +245,11 @@ def predecir(request):
             respuesta['prediccion'] = str_prediccion
             respuesta['significado'] = data_variables.dict_prediccion_significado[prediccion]
             respuesta['caracteristicas'] = lista_caracteristicas
-        except Exception as e:
-            print("¡Error! Ocurrió una excepción:", e)
             
-        return JsonResponse(respuesta)
+            return JsonResponse(respuesta)
+    except Exception as e:
+        print("¡Error! Ocurrió una excepción:", e)
+    
 
 
 @api_view(['POST'])   
