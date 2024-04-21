@@ -232,7 +232,7 @@ def predecir(request):
         
         #Se guarda el nuevo registro
         
-        #guardarNuevoRegistro(prediccion, obs_df)
+        guardarNuevoRegistro(prediccion, obs_df)
         
         #Se crea la respuesta y se retorna
         respuesta = {'prediccion': str_prediccion,'significado':data_variables.dict_prediccion_significado[prediccion], 'caracteristicas':lista_caracteristicas}
