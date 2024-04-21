@@ -3,10 +3,6 @@ from TesisApp.utils import data_variables
 import pandas as pd
 import os
 
-pathArchivos = os.path.join(os.getcwd(), 'archivos')
-
-pathCSV = os.path.join(pathArchivos, 'df_consumo_varObjetivo.csv')
-
 def get_tipo_riesgo(prm_filtro):
     if prm_filtro == "riesgo_muy_alto":
         return 4
