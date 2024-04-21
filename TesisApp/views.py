@@ -177,12 +177,14 @@ def conteo_riesgo(request):
   
 @api_view(['POST'])   
 def predecir(request):
-    
+    print("entro a predecir______")
     with open(pathJsonColumnas) as fname:
         pipeline_columnas = json.load(fname)
-    
+    print("Cargo jsonColumnas______")
     pipeline = joblib.load(pathPipeline)
+    print("Cargo Pipeline______")
     pipeline_dtypes = joblib.load(pathDtypes)
+    print("Cargo tipos de datos______")
     print("Se obtuvo los arvhicos para predecir____________")
     
     if request.method =='POST':
