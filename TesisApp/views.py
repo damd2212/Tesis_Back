@@ -183,59 +183,77 @@ def predecir(request):
     
     pipeline = joblib.load(pathPipeline)
     pipeline_dtypes = joblib.load(pathDtypes)
+    print("Se obtuvo los arvhicos para predecir____________")
     
     if request.method =='POST':
-        data_formulario = JSONParser().parse(request)
-        
-        #Para predecir y obtener la importancia de las caracteristicas para la nueva prediccion
-        
-        #Se obtiene el estimador y el procesador de los datos
-        estimador_pipeline = pipeline.named_steps['estimador']
-        procesador_pipeline = pipeline.named_steps['procesador']
-        
-        #La data que llega del frony se convierte en diccionario
-        obs_df = utils.dict_a_df(data_formulario, pipeline_columnas, pipeline_dtypes)
-        
-        #Se transforma o procesa la data y se realiza la prediccion
-        nueva_data_transformada = procesador_pipeline.transform(obs_df)
-        prediccion_nueva = estimador_pipeline.predict(nueva_data_transformada)
-        
-        #Con la libreria shap se obtiene la importancia para las nuevas predicciones que llegan
-        explainer = shap.Explainer(estimador_pipeline)
-        
-        #Se obtiene la informacion de las caracateristicas
-        valores_shap = explainer.shap_values(nueva_data_transformada)
-        
-        #Se obtiene el nombre las caracteristicas
-        nombres_caracteristicas_procesadas = []
-        for nombre, transformador in procesador_pipeline.transformer_list:
-            nombres_caracteristicas_procesadas.extend(transformador.steps[-1][1].get_feature_names_out())
-        
-        #Se une los nombres de las caracteristicas con los datos obtenidos por la libreria sha
-        importancia_caracteristicas_dict = dict(zip(nombres_caracteristicas_procesadas, valores_shap[0][0]))
-        
-        #Se usa para unir las caracteristicas que tienen un nombre similar 
-        dict_procesado = utils.obtenerDictProcesado(pipeline_columnas, importancia_caracteristicas_dict)
-        
-        #El diccionario obtenido se orrdena de forma descendente
-        dict_ordenado = dict(sorted(dict_procesado.items(), key=lambda item: item[1], reverse=True))
+        respuesta = {}
+        try:
+            data_formulario = JSONParser().parse(request)
+            #Para predecir y obtener la importancia de las caracteristicas para la nueva prediccion
+            
+            #Se obtiene el estimador y el procesador de los datos
+            estimador_pipeline = pipeline.named_steps['estimador']
+            procesador_pipeline = pipeline.named_steps['procesador']
+            
+            #La data que llega del front se convierte en diccionario
+            obs_df = utils.dict_a_df(data_formulario, pipeline_columnas, pipeline_dtypes)
+            
+            #Se transforma o procesa la data y se realiza la prediccion
+            nueva_data_transformada = procesador_pipeline.transform(obs_df)
+            prediccion_nueva = estimador_pipeline.predict(nueva_data_transformada)
+            
+            #Con la libreria shap se obtiene la importancia para las nuevas predicciones que llegan
+            explainer = shap.Explainer(estimador_pipeline)
+            print("Se obtuvo informacion de las caracteristicas____________")
+            #Se obtiene la informacion de las caracateristicas
+            valores_shap = explainer.shap_values(nueva_data_transformada)
+            
+            #Se obtiene el nombre las caracteristicas
+            nombres_caracteristicas_procesadas = []
+            for nombre, transformador in procesador_pipeline.transformer_list:
+                nombres_caracteristicas_procesadas.extend(transformador.steps[-1][1].get_feature_names_out())
+            
+            #Se une los nombres de las caracteristicas con los datos obtenidos por la libreria sha
+            importancia_caracteristicas_dict = dict(zip(nombres_caracteristicas_procesadas, valores_shap[0][0]))
+            
+            #Se usa para unir las caracteristicas que tienen un nombre similar 
+            dict_procesado = utils.obtenerDictProcesado(pipeline_columnas, importancia_caracteristicas_dict)
+            
+            #El diccionario obtenido se orrdena de forma descendente
+            dict_ordenado = dict(sorted(dict_procesado.items(), key=lambda item: item[1], reverse=True))
 
-        #Se obtiene las 10 caracteristicas que tuvieron mayor impacto
-        dict_10_caracteristicas = dict(list(dict_ordenado.items())[:5])
-        
-        #Se obtiene La lista 
-        lista_caracteristicas = utils.crearListaCaracteristicas(dict_10_caracteristicas)
-        
-        #Se convierte la prediccion a string
-        prediccion = int(str(prediccion_nueva[0]))
-        str_prediccion = utils.obtenerStrPrediccion(prediccion)
-        
-        #Se guarda el nuevo registro
-        
-        guardarNuevoRegistro(prediccion, obs_df)
-        
-        #Se crea la respuesta y se retorna
-        respuesta = {'prediccion': str_prediccion,'significado':data_variables.dict_prediccion_significado[prediccion], 'caracteristicas':lista_caracteristicas}
+            #Se obtiene las 10 caracteristicas que tuvieron mayor impacto
+            dict_10_caracteristicas = dict(list(dict_ordenado.items())[:5])
+            
+            #Se obtiene La lista 
+            lista_caracteristicas = utils.crearListaCaracteristicas(dict_10_caracteristicas)
+            
+            #Se convierte la prediccion a string
+            prediccion = int(str(prediccion_nueva[0]))
+            str_prediccion = utils.obtenerStrPrediccion(prediccion)
+            print("Se obtuvo informacion de la prediccion y caracteristicas____________")
+            #Se guarda el nuevo registro
+            
+            guardarNuevoRegistro(prediccion, obs_df)
+            print("Se guardo el nuevo registro____________")
+            
+            #Se crea la respuesta y se retorna
+            #respuesta['prediccion'] = {'prediccion': str_prediccion,'significado':data_variables.dict_prediccion_significado[prediccion], 'caracteristicas':lista_caracteristicas}
+            respuesta['prediccion'] = str_prediccion
+            respuesta['significado'] = data_variables.dict_prediccion_significado[prediccion]
+            respuesta['caracteristicas'] = lista_caracteristicas
+        except Exception as e:
+            print("¡Error! Ocurrió una excepción:", e)
+            
+        return JsonResponse(respuesta)
+
+
+@api_view(['POST'])   
+def prueba_ep(request):
+    if request.method =='POST':
+        data_formulario = JSONParser().parse(request)
+        print(data_formulario)
+        respuesta = {"success":True}
         return JsonResponse(respuesta)
 
 
