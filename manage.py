@@ -5,6 +5,7 @@ import sys
 
 
 def main():
+    
     """Run administrative tasks."""
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'TesisAPI.settings')
     try:
@@ -19,5 +20,5 @@ def main():
 
 
 if __name__ == '__main__':
-    from TesisApp.column import ColumnExtractor
+    from TesisApp.columnExtractor import ColumnExtractor
     main()
