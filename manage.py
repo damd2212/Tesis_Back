@@ -20,11 +20,16 @@ def main():
 
 
 if __name__ == '__main__':
-    from TesisApp.columnExtractor import ColumnExtractor
+    # from TesisApp.columnExtractor import ColumnExtractor
     
-    from django.core.wsgi import get_wsgi_application
+    # from django.core.wsgi import get_wsgi_application
 
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'TesisAPI.settings')
+    # os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'TesisAPI.settings')
 
-    application = get_wsgi_application()
-    #main()
+    # application = get_wsgi_application()
+    main()
+    
+from TesisApp.columnExtractor import ColumnExtractor
+from django.core.wsgi import get_wsgi_application
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'TesisAPI.settings')
+application = get_wsgi_application()
