@@ -11,6 +11,9 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
+def select_columns(X, columns):
+    return X[columns]
+
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'TesisAPI.settings')
 
 application = get_wsgi_application()

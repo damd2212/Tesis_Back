@@ -80,3 +80,6 @@ def dict_a_df(obs, columnas, dtypes):
             obs_df[col] = None
     
     return obs_df
+
+def select_columns(X, columns):
+    return X[columns]

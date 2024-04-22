@@ -18,21 +18,8 @@ def main():
         ) from exc
     execute_from_command_line(sys.argv)
 
-print("Nombre________________________")
-print(__name__)
-print("Nombre________________________")
+def select_columns(X, columns):
+    return X[columns]
 
 if __name__ == '__main__':
-    from TesisApp.columnExtractor import ColumnExtractor
-    
-    # from django.core.wsgi import get_wsgi_application
-
-    # os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'TesisAPI.settings')
-
-    # application = get_wsgi_application()
     main()
-
-from TesisApp.columnExtractor import ColumnExtractor
-from django.core.wsgi import get_wsgi_application
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'TesisAPI.settings')
-application = get_wsgi_application()

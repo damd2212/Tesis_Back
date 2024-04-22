@@ -1,7 +1,5 @@
 from django.shortcuts import render
 
-from TesisApp.columnExtractor import ColumnExtractor
-
 from django.http.response import JsonResponse
 from rest_framework.parsers import JSONParser
 from rest_framework.decorators import api_view
@@ -23,7 +21,7 @@ pathCSV = os.path.join(pathArchivos, 'df_consumo_varObjetivo.csv')
 #pathJsonColumnas = os.path.join(pathArchivos, 'columnas_ames.json')
 pathJsonColumnas = os.path.join(pathArchivos, 'columnas_consumidores.json')
 #pathPipeline = os.path.join(pathArchivos, 'pipeline_ames.pkl')
-pathPipeline = os.path.join(pathArchivos, 'pipeline_rf_best.pkl')
+pathPipeline = os.path.join(pathArchivos, 'pipeline_rf_new.pkl')
 #pathDtypes = os.path.join(pathArchivos, 'dtypes_ames.pkl')
 pathDtypes = os.path.join(pathArchivos, 'dtypes_consumidores.pkl')
 
@@ -256,6 +254,15 @@ def predecir(request):
 
 @api_view(['POST'])   
 def prueba_ep(request):
+    print("entro a predecir______")
+    with open(pathJsonColumnas) as fname:
+        pipeline_columnas = json.load(fname)
+    print("Cargo jsonColumnas______")
+    pipeline = joblib.load(pathPipeline)
+    print("Cargo Pipeline______")
+    pipeline_dtypes = joblib.load(pathDtypes)
+    print("Cargo tipos de datos______")
+    print("Se obtuvo los arvhicos para predecir____________")
     if request.method =='POST':
         data_formulario = JSONParser().parse(request)
         print(data_formulario)
