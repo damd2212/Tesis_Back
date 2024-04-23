@@ -21,7 +21,7 @@ pathCSV = os.path.join(pathArchivos, 'df_consumo_varObjetivo.csv')
 #pathJsonColumnas = os.path.join(pathArchivos, 'columnas_ames.json')
 pathJsonColumnas = os.path.join(pathArchivos, 'columnas_consumidores.json')
 #pathPipeline = os.path.join(pathArchivos, 'pipeline_ames.pkl')
-pathPipeline = os.path.join(pathArchivos, 'pipeline_rf_new.pkl')
+pathPipeline = os.path.join(pathArchivos, 'pipeline_rf_best.pkl')
 #pathDtypes = os.path.join(pathArchivos, 'dtypes_ames.pkl')
 pathDtypes = os.path.join(pathArchivos, 'dtypes_consumidores.pkl')
 
@@ -205,7 +205,7 @@ def predecir(request):
             #Se transforma o procesa la data y se realiza la prediccion
             nueva_data_transformada = procesador_pipeline.transform(obs_df)
             prediccion_nueva = estimador_pipeline.predict(nueva_data_transformada)
-            
+            prediccion = int(str(prediccion_nueva[0]))
             #Con la libreria shap se obtiene la importancia para las nuevas predicciones que llegan
             explainer = shap.Explainer(estimador_pipeline)
             print("Se obtuvo informacion de las caracteristicas____________")
@@ -214,28 +214,48 @@ def predecir(request):
             
             #Se obtiene el nombre las caracteristicas
             nombres_caracteristicas_procesadas = []
+
             for nombre, transformador in procesador_pipeline.transformer_list:
-                nombres_caracteristicas_procesadas.extend(transformador.steps[-1][1].get_feature_names_out())
+                if hasattr(transformador, 'get_feature_names_out'):
+                    nombres_generados = transformador.get_feature_names_out()
+                    nombres_caracteristicas_procesadas.extend(nombres_generados)
+                else:
+                    nombres_caracteristicas_procesadas.append(nombre)
             
-            #Se une los nombres de las caracteristicas con los datos obtenidos por la libreria sha
-            importancia_caracteristicas_dict = dict(zip(nombres_caracteristicas_procesadas, valores_shap[0][0]))
+            resultados = []
+
+            # Iterar sobre cada elemento del arreglo original
+            for elemento in nombres_caracteristicas_procesadas:
+                # Dividir la cadena por el caracter '_' y seleccionar la última parte
+                partes = elemento.split('__')
+                ultimo_parte = partes[-1]
+                
+                # Agregar la última parte al nuevo arreglo
+                resultados.append(ultimo_parte)
             
-            #Se usa para unir las caracteristicas que tienen un nombre similar 
+            
+            # #Se une los nombres de las caracteristicas con los datos obtenidos por la libreria sha
+            # importancia_caracteristicas_dict = dict(zip(nombres_caracteristicas_procesadas, valores_shap[0][0]))
+            importancia_caracteristicas_dict = dict(zip(resultados, valores_shap[prediccion][0]))
+            
+            
+            
+            # #Se usa para unir las caracteristicas que tienen un nombre similar 
             dict_procesado = utils.obtenerDictProcesado(pipeline_columnas, importancia_caracteristicas_dict)
-            
-            #El diccionario obtenido se orrdena de forma descendente
+            print(dict_procesado)
+            # #El diccionario obtenido se orrdena de forma descendente
             dict_ordenado = dict(sorted(dict_procesado.items(), key=lambda item: item[1], reverse=True))
-            #Se obtiene las 10 caracteristicas que tuvieron mayor impacto
+            # #Se obtiene las 10 caracteristicas que tuvieron mayor impacto
             dict_10_caracteristicas = dict(list(dict_ordenado.items())[:5])
             
-            #Se obtiene La lista 
+            # #Se obtiene La lista 
             lista_caracteristicas = utils.crearListaCaracteristicas(dict_10_caracteristicas)
             
-            #Se convierte la prediccion a string
-            prediccion = int(str(prediccion_nueva[0]))
+            # #Se convierte la prediccion a string
+            # prediccion = int(str(prediccion_nueva[0]))
             str_prediccion = utils.obtenerStrPrediccion(prediccion)
-            print("Se obtuvo informacion de la prediccion y caracteristicas____________")
-            #Se guarda el nuevo registro
+            # print("Se obtuvo informacion de la prediccion y caracteristicas____________")
+            # #Se guarda el nuevo registro
             
             guardarNuevoRegistro(prediccion, obs_df)
             print("Se guardo el nuevo registro____________")
@@ -245,6 +265,8 @@ def predecir(request):
             respuesta['prediccion'] = str_prediccion
             respuesta['significado'] = data_variables.dict_prediccion_significado[prediccion]
             respuesta['caracteristicas'] = lista_caracteristicas
+            #respuesta['success'] = True
+            #respuesta['message'] = "Termino"
             
             return JsonResponse(respuesta)
     except Exception as e:

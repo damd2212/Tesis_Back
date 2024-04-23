@@ -26,9 +26,9 @@ def obtenerDictProcesado(pipeline_columnas,importancia_caracteristicas_dict):
     for columna in pipeline_columnas:
         
         if columna == "residentes_hogar":
-            nuevo_dict_caracteristicas_procesadas["residentes_hogar"] = importancia_caracteristicas_dict["x0"]
+            importancia_caracteristicas_dict["residentes_hogar"] = importancia_caracteristicas_dict["residentes_hogar"]
         elif columna == "d2_04_num_hijos":
-            nuevo_dict_caracteristicas_procesadas["d2_04_num_hijos"] = importancia_caracteristicas_dict["x1"]
+            nuevo_dict_caracteristicas_procesadas["d2_04_num_hijos"] = importancia_caracteristicas_dict["d2_04_num_hijos"]
         else:
             for clave in importancia_caracteristicas_dict:
                 if columna in clave:
