@@ -60,12 +60,22 @@ def obtenerStrPrediccion(prediccion):
     else:
         return 'Riesgo muy alto'
 
-def crearListaCaracteristicas(dict_caracteristicas):
+def obtener_total_importancia(dict_caracteristicas):
+    total = 0
+    for clave, valor in dict_caracteristicas.items():
+        total = total + valor
+    return total
+
+def crearListaCaracteristicas(dict_caracteristicas, total_importancia):
     lista_caracteristicas = []
+    porcentaje = 0
     for clave, valor in dict_caracteristicas.items():
         if clave != 'CatRiesgo':
+            porcentaje = (valor* 100) / abs(total_importancia)
+            print(porcentaje)
+            print(total_importancia)
             significado = data_variables.dict_caracteristicas_significado[clave]
-            objCaracteristica = caracteristica.Caracteristica(clave, significado, round(valor, 6))
+            objCaracteristica = caracteristica.Caracteristica(clave, significado, round(porcentaje, 2))
             lista_caracteristicas.append(objCaracteristica.to_dict())
         
     return lista_caracteristicas

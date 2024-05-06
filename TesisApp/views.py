@@ -238,8 +238,6 @@ def predecir(request):
             # importancia_caracteristicas_dict = dict(zip(nombres_caracteristicas_procesadas, valores_shap[0][0]))
             importancia_caracteristicas_dict = dict(zip(resultados, valores_shap[prediccion][0]))
             
-            
-            
             # #Se usa para unir las caracteristicas que tienen un nombre similar 
             dict_procesado = utils.obtenerDictProcesado(pipeline_columnas, importancia_caracteristicas_dict)
             print(dict_procesado)
@@ -247,9 +245,12 @@ def predecir(request):
             dict_ordenado = dict(sorted(dict_procesado.items(), key=lambda item: item[1], reverse=True))
             # #Se obtiene las 10 caracteristicas que tuvieron mayor impacto
             dict_10_caracteristicas = dict(list(dict_ordenado.items())[:5])
+
+            #Obtener sumatoria de la importancia de las caracteristicas
+            total = utils.obtener_total_importancia(dict_ordenado)
             
             # #Se obtiene La lista 
-            lista_caracteristicas = utils.crearListaCaracteristicas(dict_10_caracteristicas)
+            lista_caracteristicas = utils.crearListaCaracteristicas(dict_10_caracteristicas, total)
             
             # #Se convierte la prediccion a string
             # prediccion = int(str(prediccion_nueva[0]))
