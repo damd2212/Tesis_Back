@@ -11,7 +11,8 @@ import os
 import pandas as pd
 import json
 import joblib
-import shap
+import lime
+import lime.lime_tabular
 
 pathArchivos = os.path.join(os.getcwd(), 'archivos')
 
@@ -21,14 +22,16 @@ pathCSV = os.path.join(pathArchivos, 'df_consumo_varObjetivo.csv')
 #pathJsonColumnas = os.path.join(pathArchivos, 'columnas_ames.json')
 pathJsonColumnas = os.path.join(pathArchivos, 'columnas_consumidores.json')
 #pathPipeline = os.path.join(pathArchivos, 'pipeline_ames.pkl')
-pathPipeline = os.path.join(pathArchivos, 'pipeline_rf_best.pkl')
+pathPipeline = os.path.join(pathArchivos, 'pipeline_rl_best.pkl')
 #pathDtypes = os.path.join(pathArchivos, 'dtypes_ames.pkl')
 pathDtypes = os.path.join(pathArchivos, 'dtypes_consumidores.pkl')
 
 @api_view(['GET'])
 def lista_variables(request):
     if request.method == 'GET':
-        return JsonResponse(data_variables.diccionario_variables, safe=False)
+        print(len(data_variables.diccionario_variables['variables']))
+        print(len(data_variables.diccionario_variables_significado['variables']))
+        return JsonResponse(data_variables.diccionario_variables_significado, safe=False)
     
 @api_view(['GET'])
 def lista_variables_significado(request):
@@ -186,6 +189,8 @@ def predecir(request):
         print("Cargo Pipeline______")
         pipeline_dtypes = joblib.load(pathDtypes)
         print("Cargo tipos de datos______")
+        data = joblib.load(pathDFData)
+        print("Cargo data______")
         print("Se obtuvo los arvhicos para predecir____________")
         
         if request.method =='POST':
@@ -206,11 +211,8 @@ def predecir(request):
             nueva_data_transformada = procesador_pipeline.transform(obs_df)
             prediccion_nueva = estimador_pipeline.predict(nueva_data_transformada)
             prediccion = int(str(prediccion_nueva[0]))
-            #Con la libreria shap se obtiene la importancia para las nuevas predicciones que llegan
-            explainer = shap.Explainer(estimador_pipeline)
-            print("Se obtuvo informacion de las caracteristicas____________")
-            #Se obtiene la informacion de las caracateristicas
-            valores_shap = explainer.shap_values(nueva_data_transformada)
+            
+            print("Obtuvo el nueva data con prediccion::::::::::::::::::::::::::")
             
             #Se obtiene el nombre las caracteristicas
             nombres_caracteristicas_procesadas = []
@@ -222,21 +224,49 @@ def predecir(request):
                 else:
                     nombres_caracteristicas_procesadas.append(nombre)
             
+            num_features = len(nombres_caracteristicas_procesadas)
+            explainer = lime.lime_tabular.LimeTabularExplainer(
+                training_data=procesador_pipeline.transform(data),
+                feature_names=nombres_caracteristicas_procesadas,
+                class_names=[0, 1, 2, 3, 4],
+                mode='classification'
+            )
+            
+            exp = explainer.explain_instance(
+                data_row=nueva_data_transformada[0],
+                predict_fn=estimador_pipeline.predict_proba,
+                num_features=num_features
+            )
+            
+            lista_importancia_caracteristicas = exp.as_list()
+            
+            lista_caracteristicas = []
+            lista_val_caracteristicas = []
+            for feature, importance in lista_importancia_caracteristicas:
+                partes = feature.split(' ')
+                if partes[0].startswith('transformador'):
+                    lista_caracteristicas.append(partes[0])
+                elif partes[1].startswith('transformador'):
+                    lista_caracteristicas.append(partes[1])
+                elif partes[2].startswith('transformador'):
+                    lista_caracteristicas.append(partes[2])
+                lista_val_caracteristicas.append(importance)
+            
             resultados = []
 
             # Iterar sobre cada elemento del arreglo original
-            for elemento in nombres_caracteristicas_procesadas:
+            for elemento in lista_caracteristicas:
                 # Dividir la cadena por el caracter '_' y seleccionar la última parte
                 partes = elemento.split('__')
-                ultimo_parte = partes[-1]
+                ultima_parte = partes[-1]
                 
                 # Agregar la última parte al nuevo arreglo
-                resultados.append(ultimo_parte)
+                resultados.append(ultima_parte)
             
             
             # #Se une los nombres de las caracteristicas con los datos obtenidos por la libreria sha
             # importancia_caracteristicas_dict = dict(zip(nombres_caracteristicas_procesadas, valores_shap[0][0]))
-            importancia_caracteristicas_dict = dict(zip(resultados, valores_shap[prediccion][0]))
+            importancia_caracteristicas_dict = dict(zip(resultados, lista_val_caracteristicas))
             
             # #Se usa para unir las caracteristicas que tienen un nombre similar 
             dict_procesado = utils.obtenerDictProcesado(pipeline_columnas, importancia_caracteristicas_dict)
@@ -272,29 +302,7 @@ def predecir(request):
             return JsonResponse(respuesta)
     except Exception as e:
         print("¡Error! Ocurrió una excepción:", e)
-    
-
-
-@api_view(['POST'])   
-def prueba_ep(request):
-    try:
-        with open(pathJsonColumnas) as fname:
-            pipeline_columnas = json.load(fname)
-        print("Cargo jsonColumnas______")
-        pipeline = joblib.load(pathPipeline)
-        print("Cargo Pipeline______")
-        pipeline_dtypes = joblib.load(pathDtypes)
-        print("Cargo tipos de datos______")
-        print("Se obtuvo los arvhicos para predecir____________")
-        if request.method =='POST':
-            data_formulario = JSONParser().parse(request)
-            print(data_formulario)
-            respuesta = {"success":True}
-            return JsonResponse(respuesta)
-    except Exception as e:
-        print("¡Error! Ocurrió una excepción:", e)
-    print("entro a predecir______")
-    
+        
 
 
 def guardarNuevoRegistro(prediccion, obs_df):

@@ -62,3 +62,208 @@ diccionario_variables = {'variables': [
     ,{'nombreFake':'Numero de familiares que consumen SP','nombreReal':'g_01_a_num_familiares_consumen_sp_imp_tipo'},{'nombreFake':'Numero de amigos que consumen SP','nombreReal':'g_02_a_num_amigos_consumen_sp_imp_tipo'},{'nombreFake':'Tiempo en que le ofrecieron marihuana','nombreReal':'g_08_a_ofrecieron_marihuana_imp_tipo'},{'nombreFake':'Tiempo en que le ofrecieron cocaina','nombreReal':'g_08_b_ofrecieron_cocaina_imp_tipo'},{'nombreFake':'Tiempo en que le ofrecieron basuco','nombreReal':'g_08_c_ofrecieron_basuco_imp_tipo'}
     ,{'nombreFake':'Nivel de riesgo','nombreReal':'CatRiesgo'} 
 ]}
+
+diccionario_variables_significado = {
+    'variables': [
+        {
+            'nombreFake': 'Departamento',
+            'nombreReal': 'departamento',
+            'significado': 'Departamento en el que vive una persona actualmente.'
+        },
+        {
+            'nombreFake': 'Residentes hogar',
+            'nombreReal': 'residentes_hogar',
+            'significado': 'Número de personas que residen en el hogar de una persona.'
+        },
+        {
+            'nombreFake': 'Numero de hijos',
+            'nombreReal': 'd2_04_num_hijos',
+            'significado': 'Número de hijos vivos que tiene un persona.'
+        },
+        {
+            'nombreFake': 'Edad',
+            'nombreReal': 'per_edad_tipo',
+            'significado': 'Etapa de desarrollo o edad en la que se encuentra una persona.'
+        },
+        {
+            'nombreFake': 'Estrato',
+            'nombreReal': 'estrato_tipo',
+            'significado': 'Estrato social en el que se encuentra una persona.'
+        },
+        {
+            'nombreFake': 'Situacion social',
+            'nombreReal': 'situacion_tipo',
+            'significado': 'Actividad en la que ocupa mayormente el tiempo una persona.'
+        },
+        {
+            'nombreFake': 'Frecuencia consumo marihuana',
+            'nombreReal': 'frecuencia_consumo_marihuana_tipo',
+            'significado': 'Frecuencia con la que consume marihuana una persona.'
+        },
+        {
+            'nombreFake': 'Frecuencia consumo cocaina',
+            'nombreReal': 'frecuencia_consumo_cocaina_tipo',
+            'significado': 'Frecuencia con la que consume cocaina una persona.'
+        },
+        {
+            'nombreFake': 'Frecuencia consumo cocaina',
+            'nombreReal': 'frecuencia_consumo_basuco_tipo',
+            'significado': 'Frecuencia con la que consume basuco una persona.'
+        },
+        {
+            'nombreFake': 'Sexo',
+            'nombreReal': 'per_sexo_tipo',
+            'significado': 'Sexo con el que se identifica (Hombre o Mujer) una persona.'
+        },
+        {
+            'nombreFake': 'Vive padre hogar',
+            'nombreReal': 'vive_padre_hogar_tipo',
+            'significado': 'En el hogar de una persona vive o no el padre.'
+        },
+        {
+            'nombreFake': 'Vive madre hogar',
+            'nombreReal': 'vive_madre_hogar_tipo',
+            'significado': 'En el hogar de una persona vive o no la madre.'
+        },
+        {
+            'nombreFake': 'Tipo de vivienda',
+            'nombreReal': 'vivienda_tipo',
+            'significado': 'Tipo de vivenda en la que vive una persona.'
+        },
+        {
+            'nombreFake': 'Aporta dinero en su hogar',
+            'nombreReal': 'd_01_aporta_dinero_hogar_tipo',
+            'significado': 'Aporta o no economicamente al hogar una persona.'
+        },
+        {
+            'nombreFake': 'Estado de salud',
+            'nombreReal': 'd_08_estado_salud_tipo',
+            'significado': 'Estado de salud con el que cuenta una persona.'
+        },
+        {
+            'nombreFake': 'Personas deprimidas',
+            'nombreReal': 'd_09_deprimido_tipo',
+            'significado': 'Se ha sentido deprimido una persona'
+        },
+        {
+            'nombreFake': 'Personas con poco interes',
+            'nombreReal': 'd_10_poco_interes_tipo',
+            'significado': 'Poco interes al realizar las cosas que le gusta hacer a una persona.'
+        },
+        {
+            'nombreFake': 'Conocimiento riesgo de fumar marihuana',
+            'nombreReal': 'd_11_h_conocimiento_riesgo_fumar_marihuana_frecuentemente_tipo',
+            'significado': 'Conocimiento sobre el riesgo de consumir marihuana de forma frecuente.'
+        },
+        {
+            'nombreFake': 'Conocimiento riesgo de fumar cocaina',
+            'nombreReal': 'd_11_k_conocimiento_riesgo_cocaina_frecuentemente_tipo',
+            'significado': 'Conocimiento sobre el riesgo de consumir cocaina de forma frecuente.'
+        },
+        {
+            'nombreFake': 'Conocimiento riesgo de fumar basuco',
+            'nombreReal': 'd_11_n_conocimiento_riesgo_fumar_basuco_frecuentemente_tipo',
+            'significado': 'Conocimiento sobre el riesgo de consumir basuco de forma frecuente.'
+        },
+        {
+            'nombreFake': 'Problemas de consumo de SP en el barrio',
+            'nombreReal': 'd_12_b_presenta_problema_consumo_sp_barrio_tipo',
+            'significado': 'En el barrio de una persona se presenta o no se presenta el consumo de sustancias psicoactivas.'
+        },
+        {
+            'nombreFake': 'Problemas de expendio de SP en el barrio',
+            'nombreReal': 'd_12_c_presenta_problema_expendio_sp_barrio_tipo',
+            'significado': 'En el barrio de una persona se presenta o no se presenta el expendido de sustancias psicoactivas.'
+        },
+        {
+            'nombreFake': 'Tipo de etnia',
+            'nombreReal': 'd2_01_etnia_tipo',
+            'significado': 'Etnia a la que pertenece una persona.'
+        },
+        {
+            'nombreFake': 'Estado civil',
+            'nombreReal': 'd2_03_estado_civil_tipo',
+            'significado': 'Estado civil en el que se encuentra una persona.'
+        },
+        {
+            'nombreFake': 'Nivel educativo',
+            'nombreReal': 'd2_05_nivel_educativo_tipo',
+            'significado': 'Mayor nivel educativo en el que se encuentra o que ya curso una persona.'
+        },
+        {
+            'nombreFake': 'Consumo de SP por parte de familiares',
+            'nombreReal': 'g_01_familiares_consumen_sp_tipo',
+            'significado': 'Los familiares de una persona consumen o no consumen sustancias psicoactivas.'
+        },
+        {
+            'nombreFake': 'Comsumo de SP por parte de amigos',
+            'nombreReal': 'g_02_amigos_consumen_sp_tipo',
+            'significado': 'Los amigos de una persona consumen o no consumen sustancias psicoactivas.'
+        },
+        {
+            'nombreFake': 'Curiosidad de probar SP',
+            'nombreReal': 'g_03_curiosidad_probar_sp_tipo',
+            'significado': 'Una personaHa sentido o no curiosidad por probar sustancias psicoactivas.'
+        },
+        {
+            'nombreFake': 'Personas probarían SP',
+            'nombreReal': 'g_04_probaria_sp_tipo',
+            'significado': 'Decision por probar sustancias psicoactivas '
+        },
+        {
+            'nombreFake': 'Posibilidad de probar SP',
+            'nombreReal': 'g_05_posibilidad_probar_sp_tipo',
+            'significado': 'Se le ha presentado la posibilidad o no para probar sustancias psicoactivas a una persona.'
+        },
+        {
+            'nombreFake': 'Posiblidad de conseguir marihuana',
+            'nombreReal': 'g_06_a_posibilidad_conseguir_marihuana_tipo',
+            'significado': 'Facilidad o posibilidad para poder conseguir marihuana.'
+        },
+        {
+            'nombreFake': 'Posibilidad de conseguir cocaina',
+            'nombreReal': 'g_06_b_posibilidad_conseguir_cocaina_tipo',
+            'significado': 'Facilidad o posibilidad para poder conseguir cocaina.'
+        },
+        {
+            'nombreFake': 'Posibilidad de conseguir basuco',
+            'nombreReal': 'g_06_c_posibilidad_conseguir_basuco_tipo',
+            'significado': 'Facilidad o posibilidad para poder conseguir basuco.'
+        },
+        {
+            'nombreFake': 'Alguien ofreció comprar o probar SP',
+            'nombreReal': 'g_07_alguien_ofrecio_comprar_probar_sp_tipo',
+            'significado': 'A una persona le han ofrecido comprar o probar sustencias psicoactivas'
+        },
+        {
+            'nombreFake': 'Numero de familiares que consumen SP',
+            'nombreReal': 'g_01_a_num_familiares_consumen_sp_imp_tipo',
+            'significado': 'Numero de familiares que consumen sustancias psicoactivas.'
+        },
+        {
+            'nombreFake': 'Numero de amigos que consumen SP',
+            'nombreReal': 'g_02_a_num_amigos_consumen_sp_imp_tipo',
+            'significado': 'Numero de amigos que consumen sustancias psicoactivas.'
+        },
+        {
+            'nombreFake': 'Tiempo en que le ofrecieron marihuana',
+            'nombreReal': 'g_08_a_ofrecieron_marihuana_imp_tipo',
+            'significado': 'A una persona le han ofrecido y hace cuanto tiempo le ofrecieron marihuana.'
+        },
+        {
+            'nombreFake': 'Tiempo en que le ofrecieron cocaina',
+            'nombreReal': 'g_08_b_ofrecieron_cocaina_imp_tipo',
+            'significado': 'A una persona le han ofrecido y hace cuanto tiempo le ofrecieron cocaina.'
+        },
+        {
+            'nombreFake': 'Tiempo en que le ofrecieron basuco',
+            'nombreReal': 'g_08_c_ofrecieron_basuco_imp_tipo',
+            'significado': 'A una persona le han ofrecido y hace cuanto tiempo le ofrecieron basuco.'
+        },
+        {
+            'nombreFake': 'Nivel de riesgo',
+            'nombreReal': 'CatRiesgo',
+            'significado': 'Nivel de riesgo en el que se encuentra la persona'
+        }
+    ]
+}
