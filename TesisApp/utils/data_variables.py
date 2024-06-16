@@ -78,7 +78,7 @@ diccionario_variables_significado = {
         {
             'nombreFake': 'Numero de hijos',
             'nombreReal': 'd2_04_num_hijos',
-            'significado': 'Número de hijos vivos que tiene un persona.'
+            'significado': 'Número de hijos vivos que tiene una persona.'
         },
         {
             'nombreFake': 'Edad',
@@ -106,7 +106,7 @@ diccionario_variables_significado = {
             'significado': 'Frecuencia con la que consume cocaina una persona.'
         },
         {
-            'nombreFake': 'Frecuencia consumo cocaina',
+            'nombreFake': 'Frecuencia consumo basuco',
             'nombreReal': 'frecuencia_consumo_basuco_tipo',
             'significado': 'Frecuencia con la que consume basuco una persona.'
         },
@@ -128,7 +128,7 @@ diccionario_variables_significado = {
         {
             'nombreFake': 'Tipo de vivienda',
             'nombreReal': 'vivienda_tipo',
-            'significado': 'Tipo de vivenda en la que vive una persona.'
+            'significado': 'Tipo de vivienda en la que vive una persona.'
         },
         {
             'nombreFake': 'Aporta dinero en su hogar',
@@ -143,7 +143,7 @@ diccionario_variables_significado = {
         {
             'nombreFake': 'Personas deprimidas',
             'nombreReal': 'd_09_deprimido_tipo',
-            'significado': 'Se ha sentido deprimido una persona'
+            'significado': 'Se ha sentido deprimido una persona.'
         },
         {
             'nombreFake': 'Personas con poco interes',
@@ -203,12 +203,12 @@ diccionario_variables_significado = {
         {
             'nombreFake': 'Curiosidad de probar SP',
             'nombreReal': 'g_03_curiosidad_probar_sp_tipo',
-            'significado': 'Una personaHa sentido o no curiosidad por probar sustancias psicoactivas.'
+            'significado': 'Una persona ha sentido o no curiosidad por probar sustancias psicoactivas.'
         },
         {
             'nombreFake': 'Personas probarían SP',
             'nombreReal': 'g_04_probaria_sp_tipo',
-            'significado': 'Decision por probar sustancias psicoactivas '
+            'significado': 'Decision por probar sustancias psicoactivas.'
         },
         {
             'nombreFake': 'Posibilidad de probar SP',
@@ -233,7 +233,7 @@ diccionario_variables_significado = {
         {
             'nombreFake': 'Alguien ofreció comprar o probar SP',
             'nombreReal': 'g_07_alguien_ofrecio_comprar_probar_sp_tipo',
-            'significado': 'A una persona le han ofrecido comprar o probar sustencias psicoactivas'
+            'significado': 'A una persona le han ofrecido comprar o probar sustancias psicoactivas.'
         },
         {
             'nombreFake': 'Numero de familiares que consumen SP',
@@ -263,7 +263,7 @@ diccionario_variables_significado = {
         {
             'nombreFake': 'Nivel de riesgo',
             'nombreReal': 'CatRiesgo',
-            'significado': 'Nivel de riesgo en el que se encuentra la persona'
+            'significado': 'Nivel de riesgo en el que se encuentra la persona.'
         }
     ]
 }
