@@ -66,16 +66,18 @@ def obtener_total_importancia(dict_caracteristicas):
         total = total + valor
     return total
 
-def crearListaCaracteristicas(dict_caracteristicas, total_importancia):
+def crearListaCaracteristicas(dict_caracteristicas, total_importancia, data_formulario):
     lista_caracteristicas = []
     porcentaje = 0
     for clave, valor in dict_caracteristicas.items():
         if clave != 'CatRiesgo':
             porcentaje = (valor* 100) / abs(total_importancia)
-            print(porcentaje)
-            print(total_importancia)
             significado = data_variables.dict_caracteristicas_significado[clave]
-            objCaracteristica = caracteristica.Caracteristica(clave, significado, round(porcentaje, 2))
+            res_val_form = data_formulario[clave]
+            if clave != 'd2_04_num_hijos' and clave != 'residentes_hogar':
+                aux_data_form = data_variables.dict_data_respuestas[res_val_form]
+                res_val_form = aux_data_form
+            objCaracteristica = caracteristica.Caracteristica(clave, significado, round(porcentaje, 2), res_val_form)
             lista_caracteristicas.append(objCaracteristica.to_dict())
         
     return lista_caracteristicas
