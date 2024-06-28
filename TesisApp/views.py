@@ -90,7 +90,7 @@ def lista_conteo_riesgo_per_sexo_tipo(request):
 
 #conteo de cada valor en la columna 'frecuencia_consumo' para cada nivel educativo. se utiliza función crosstab de pandas, que crea una tabla de contingencia.
 @api_view(['GET'])
-def lista_conteo_nivel_edu_marihuana(request):
+def lista_conteo_dos_variables(request):
 
     filtro1_param = request.query_params.get('filtro1_param') 
     filtro2_param = request.query_params.get('filtro2_param')
