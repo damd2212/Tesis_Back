@@ -94,14 +94,25 @@ def lista_conteo_dos_variables(request):
 
     filtro1_param = request.query_params.get('filtro1_param') 
     filtro2_param = request.query_params.get('filtro2_param')
+    print(filtro1_param)
+    print(filtro2_param)
     data = joblib.load(pathDFData)
     if request.method == 'GET':
 
         tabla_contingencia = pd.crosstab(data[filtro1_param], data[filtro2_param])
 
         dict_nivel_edu = tabla_contingencia.to_dict()
+        
+        new_dict = {}
+        for old_key, sub_dict in dict_nivel_edu.items():
+            new_key = data_variables.dict_data_respuestas.get(old_key, old_key)  # Reemplaza la clave externa
+            new_sub_dict = {}
+            for sub_key, value in sub_dict.items():
+                new_sub_key = data_variables.dict_data_respuestas.get(sub_key, sub_key)  # Reemplaza las claves internas
+                new_sub_dict[new_sub_key] = value
+            new_dict[new_key] = new_sub_dict
 
-        return JsonResponse(dict_nivel_edu, safe=False)
+        return JsonResponse(new_dict, safe=False)
 
 @api_view(['GET'])
 def lista_conteo_depto_v2(request):
