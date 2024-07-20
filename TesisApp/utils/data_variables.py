@@ -71,7 +71,7 @@ diccionario_variables_significado = {
             'significado': 'Departamento en el que vive una persona actualmente.'
         },
         {
-            'nombreFake': 'Residentes hogar',
+            'nombreFake': 'Residentes en el hogar',
             'nombreReal': 'residentes_hogar',
             'significado': 'Número de personas que residen en el hogar de una persona.'
         },
@@ -96,17 +96,17 @@ diccionario_variables_significado = {
             'significado': 'Actividad en la que ocupa mayormente el tiempo una persona.'
         },
         {
-            'nombreFake': 'Frecuencia consumo marihuana',
+            'nombreFake': 'Frecuencia de consumo de marihuana',
             'nombreReal': 'frecuencia_consumo_marihuana_tipo',
             'significado': 'Frecuencia con la que consume marihuana una persona.'
         },
         {
-            'nombreFake': 'Frecuencia consumo cocaina',
+            'nombreFake': 'Frecuencia de consumo de cocaina',
             'nombreReal': 'frecuencia_consumo_cocaina_tipo',
             'significado': 'Frecuencia con la que consume cocaina una persona.'
         },
         {
-            'nombreFake': 'Frecuencia consumo basuco',
+            'nombreFake': 'Frecuencia de consumo de basuco',
             'nombreReal': 'frecuencia_consumo_basuco_tipo',
             'significado': 'Frecuencia con la que consume basuco una persona.'
         },
@@ -116,12 +116,12 @@ diccionario_variables_significado = {
             'significado': 'Sexo con el que se identifica (Hombre o Mujer) una persona.'
         },
         {
-            'nombreFake': 'Vive padre hogar',
+            'nombreFake': 'Vive el padre en el hogar',
             'nombreReal': 'vive_padre_hogar_tipo',
             'significado': 'En el hogar de una persona vive o no el padre.'
         },
         {
-            'nombreFake': 'Vive madre hogar',
+            'nombreFake': 'Vive la madre en el hogar',
             'nombreReal': 'vive_madre_hogar_tipo',
             'significado': 'En el hogar de una persona vive o no la madre.'
         },
@@ -146,32 +146,32 @@ diccionario_variables_significado = {
             'significado': 'Se ha sentido deprimido una persona.'
         },
         {
-            'nombreFake': 'Personas con poco interes',
+            'nombreFake': 'Personas con poco interes en sus actividades',
             'nombreReal': 'd_10_poco_interes_tipo',
             'significado': 'Poco interes al realizar las cosas que le gusta hacer a una persona.'
         },
         {
-            'nombreFake': 'Conocimiento riesgo de fumar marihuana',
+            'nombreFake': 'Conocimiento del riesgo de fumar marihuana',
             'nombreReal': 'd_11_h_conocimiento_riesgo_fumar_marihuana_frecuentemente_tipo',
             'significado': 'Conocimiento sobre el riesgo de consumir marihuana de forma frecuente.'
         },
         {
-            'nombreFake': 'Conocimiento riesgo de fumar cocaina',
+            'nombreFake': 'Conocimiento del riesgo de consumir cocaina',
             'nombreReal': 'd_11_k_conocimiento_riesgo_cocaina_frecuentemente_tipo',
             'significado': 'Conocimiento sobre el riesgo de consumir cocaina de forma frecuente.'
         },
         {
-            'nombreFake': 'Conocimiento riesgo de fumar basuco',
+            'nombreFake': 'Conocimiento del riesgo de fumar basuco',
             'nombreReal': 'd_11_n_conocimiento_riesgo_fumar_basuco_frecuentemente_tipo',
             'significado': 'Conocimiento sobre el riesgo de consumir basuco de forma frecuente.'
         },
         {
-            'nombreFake': 'Problemas de consumo de SP en el barrio',
+            'nombreFake': 'Problemas de consumo de SPI en el barrio',
             'nombreReal': 'd_12_b_presenta_problema_consumo_sp_barrio_tipo',
             'significado': 'En el barrio de una persona se presenta o no se presenta el consumo de sustancias psicoactivas.'
         },
         {
-            'nombreFake': 'Problemas de expendio de SP en el barrio',
+            'nombreFake': 'Problemas de expendio de SPI en el barrio',
             'nombreReal': 'd_12_c_presenta_problema_expendio_sp_barrio_tipo',
             'significado': 'En el barrio de una persona se presenta o no se presenta el expendido de sustancias psicoactivas.'
         },
@@ -191,27 +191,27 @@ diccionario_variables_significado = {
             'significado': 'Mayor nivel educativo en el que se encuentra o que ya curso una persona.'
         },
         {
-            'nombreFake': 'Consumo de SP por parte de familiares',
+            'nombreFake': 'Consumo de SPI por parte de familiares',
             'nombreReal': 'g_01_familiares_consumen_sp_tipo',
             'significado': 'Los familiares de una persona consumen o no consumen sustancias psicoactivas.'
         },
         {
-            'nombreFake': 'Comsumo de SP por parte de amigos',
+            'nombreFake': 'Comsumo de SPI por parte de amigos',
             'nombreReal': 'g_02_amigos_consumen_sp_tipo',
             'significado': 'Los amigos de una persona consumen o no consumen sustancias psicoactivas.'
         },
         {
-            'nombreFake': 'Curiosidad de probar SP',
+            'nombreFake': 'Curiosidad de probar SPI',
             'nombreReal': 'g_03_curiosidad_probar_sp_tipo',
             'significado': 'Una persona ha sentido o no curiosidad por probar sustancias psicoactivas.'
         },
         {
-            'nombreFake': 'Personas probarían SP',
+            'nombreFake': 'Personas que probarían SPI',
             'nombreReal': 'g_04_probaria_sp_tipo',
             'significado': 'Decision por probar sustancias psicoactivas.'
         },
         {
-            'nombreFake': 'Posibilidad de probar SP',
+            'nombreFake': 'Posibilidad de probar SPI',
             'nombreReal': 'g_05_posibilidad_probar_sp_tipo',
             'significado': 'Se le ha presentado la posibilidad o no para probar sustancias psicoactivas a una persona.'
         },
@@ -231,17 +231,17 @@ diccionario_variables_significado = {
             'significado': 'Facilidad o posibilidad para poder conseguir basuco.'
         },
         {
-            'nombreFake': 'Alguien ofreció comprar o probar SP',
+            'nombreFake': 'Alguien le ofreció comprar o probar SPI',
             'nombreReal': 'g_07_alguien_ofrecio_comprar_probar_sp_tipo',
             'significado': 'A una persona le han ofrecido comprar o probar sustancias psicoactivas.'
         },
         {
-            'nombreFake': 'Numero de familiares que consumen SP',
+            'nombreFake': 'Numero de familiares que consumen SPI',
             'nombreReal': 'g_01_a_num_familiares_consumen_sp_imp_tipo',
             'significado': 'Numero de familiares que consumen sustancias psicoactivas.'
         },
         {
-            'nombreFake': 'Numero de amigos que consumen SP',
+            'nombreFake': 'Numero de amigos que consumen SPI',
             'nombreReal': 'g_02_a_num_amigos_consumen_sp_imp_tipo',
             'significado': 'Numero de amigos que consumen sustancias psicoactivas.'
         },
@@ -393,4 +393,47 @@ dict_data_respuestas = {
     "g_08_c_Mas_12_meses": "Mas de 12 meses",
     "g_08_c_Mas_30_dias_Menos_12_meses": "Mas de 30 dias y menos de 12 meses",
     "g_08_c_Ultimos_30_dias": "Ultimos 30 dias"
+}
+
+diccionario_real_fake = {
+    'departamento': 'Departamento',
+    'residentes_hogar': 'Residentes en el hogar',
+    'd2_04_num_hijos': 'Numero de hijos',
+    'per_edad_tipo': 'Edad',
+    'estrato_tipo': 'Estrato',
+    'situacion_tipo': 'Situacion social',
+    'frecuencia_consumo_marihuana_tipo': 'Frecuencia de consumo de marihuana',
+    'frecuencia_consumo_cocaina_tipo': 'Frecuencia de consumo de cocaina',
+    'frecuencia_consumo_basuco_tipo': 'Frecuencia de consumo de basuco',
+    'per_sexo_tipo': 'Sexo',
+    'vive_padre_hogar_tipo': 'Vive el padre en el hogar',
+    'vive_madre_hogar_tipo': 'Vive la madre en el hogar',
+    'vivienda_tipo': 'Tipo de vivienda',
+    'd_01_aporta_dinero_hogar_tipo': 'Aporta dinero en su hogar',
+    'd_08_estado_salud_tipo': 'Estado de salud',
+    'd_09_deprimido_tipo': 'Personas deprimidas',
+    'd_10_poco_interes_tipo': 'Personas con poco interes en sus actividades',
+    'd_11_h_conocimiento_riesgo_fumar_marihuana_frecuentemente_tipo': 'Conocimiento del riesgo de fumar marihuana',
+    'd_11_k_conocimiento_riesgo_cocaina_frecuentemente_tipo': 'Conocimiento del riesgo de consumir cocaina',
+    'd_11_n_conocimiento_riesgo_fumar_basuco_frecuentemente_tipo': 'Conocimiento del riesgo de fumar basuco',
+    'd_12_b_presenta_problema_consumo_sp_barrio_tipo': 'Problemas de consumo de SPI en el barrio',
+    'd_12_c_presenta_problema_expendio_sp_barrio_tipo': 'Problemas de expendio de SPI en el barrio',
+    'd2_01_etnia_tipo': 'Tipo de etnia',
+    'd2_03_estado_civil_tipo': 'Estado civil',
+    'd2_05_nivel_educativo_tipo': 'Nivel educativo',
+    'g_01_familiares_consumen_sp_tipo': 'Consumo de SPI por parte de familiares',
+    'g_02_amigos_consumen_sp_tipo': 'Comsumo de SPI por parte de amigos',
+    'g_03_curiosidad_probar_sp_tipo': 'Curiosidad de probar SPI',
+    'g_04_probaria_sp_tipo': 'Personas que probarían SPI',
+    'g_05_posibilidad_probar_sp_tipo': 'Posibilidad de probar SPI',
+    'g_06_a_posibilidad_conseguir_marihuana_tipo': 'Posiblidad de conseguir marihuana',
+    'g_06_b_posibilidad_conseguir_cocaina_tipo': 'Posibilidad de conseguir cocaina',
+    'g_06_c_posibilidad_conseguir_basuco_tipo': 'Posibilidad de conseguir basuco',
+    'g_07_alguien_ofrecio_comprar_probar_sp_tipo': 'Alguien le ofreció comprar o probar SPI',
+    'g_01_a_num_familiares_consumen_sp_imp_tipo': 'Numero de familiares que consumen SPI',
+    'g_02_a_num_amigos_consumen_sp_imp_tipo': 'Numero de amigos que consumen SPI',
+    'g_08_a_ofrecieron_marihuana_imp_tipo': 'Tiempo en que le ofrecieron marihuana',
+    'g_08_b_ofrecieron_cocaina_imp_tipo': 'Tiempo en que le ofrecieron cocaina',
+    'g_08_c_ofrecieron_basuco_imp_tipo': 'Tiempo en que le ofrecieron basuco',
+    'CatRiesgo': 'Nivel de riesgo'
 }

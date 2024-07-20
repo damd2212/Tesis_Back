@@ -79,8 +79,17 @@ def crearListaCaracteristicas(dict_caracteristicas, total_importancia, data_form
                 res_val_form = aux_data_form
             objCaracteristica = caracteristica.Caracteristica(clave, significado, round(porcentaje, 2), res_val_form)
             lista_caracteristicas.append(objCaracteristica.to_dict())
+    
+    
+    print(lista_caracteristicas)
+    
+    for dic in lista_caracteristicas:
+        if dic["clave"] in data_variables.diccionario_real_fake:
+          dic["clave"] = data_variables.diccionario_real_fake[dic["clave"]]
         
     return lista_caracteristicas
+
+
 
 #Funcion para convertir el json a diccionario
 def dict_a_df(obs, columnas, dtypes):

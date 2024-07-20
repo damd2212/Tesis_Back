@@ -136,7 +136,8 @@ def lista_registros(request):
 @api_view(['GET'])
 def lista_departamentos(request):
     if request.method == 'GET':
-        return JsonResponse(data_variables.diccionario_deptos, safe=False)
+        dict_ordenado = dict(sorted(data_variables.diccionario_deptos.items()))
+        return JsonResponse(dict_ordenado, safe=False)
     
 
 #Funcion para obtener los departamentos por el nivel de riesgo
@@ -273,7 +274,7 @@ def predecir(request):
             
             # #El diccionario obtenido se orrdena de forma descendente
             dict_ordenado = dict(sorted(dict_procesado.items(), key=lambda item: item[1], reverse=True))
-            # #Se obtiene las 10 caracteristicas que tuvieron mayor impacto
+            # #Se obtiene las 5 caracteristicas que tuvieron mayor impacto
             dict_10_caracteristicas = dict(list(dict_ordenado.items())[:5])
 
             #Obtener sumatoria de la importancia de las caracteristicas
